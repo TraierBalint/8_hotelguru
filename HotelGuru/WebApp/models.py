@@ -1,60 +1,62 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, Boolean
-from sqlalchemy.orm import relationship, declarative_base
+from WebApp import db
 from datetime import datetime
 
-Base = declarative_base()
-
-class User(Base):
+class User(db.Model):
     __tablename__ = 'users'
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    email = Column(String, unique=True, nullable=False)
-    phone = Column(String, nullable=True)
-    address = Column(String, nullable=True)
-    role = Column(String, nullable=False)
-    reservations = relationship("Reservation", back_populates="guest")
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
+    phone = db.Column(db.String, nullable=True)
+    address = db.Column(db.String, nullable=True)
+    role = db.Column(db.String, nullable=False)
 
-class Room(Base):
+    reservations = db.relationship("Reservation", back_populates="guest")
+
+class Room(db.Model):
     __tablename__ = 'rooms'
-    id = Column(Integer, primary_key=True)
-    number = Column(String, unique=True, nullable=False)
-    type = Column(String, nullable=False)
-    price = Column(Float, nullable=False)
-    status = Column(String, default='available')
-    reservations = relationship("Reservation", back_populates="room")
+    id = db.Column(db.Integer, primary_key=True)
+    number = db.Column(db.String, unique=True, nullable=False)
+    type = db.Column(db.String, nullable=False)
+    price = db.Column(db.Float, nullable=False)
+    status = db.Column(db.String, default='available')
 
-class Reservation(Base):
+    reservations = db.relationship("Reservation", back_populates="room")
+
+class Reservation(db.Model):
     __tablename__ = 'reservations'
-    id = Column(Integer, primary_key=True)
-    guest_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-    room_id = Column(Integer, ForeignKey('rooms.id'), nullable=False)
-    check_in = Column(DateTime, nullable=False)
-    check_out = Column(DateTime, nullable=False)
-    confirmed = Column(Boolean, default=False)
-    total_price = Column(Float, nullable=False)
-    guest = relationship("User", back_populates="reservations")
-    room = relationship("Room", back_populates="reservations")
+    id = db.Column(db.Integer, primary_key=True)
+    guest_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    room_id = db.Column(db.Integer, db.ForeignKey('rooms.id'), nullable=False)
+    check_in = db.Column(db.DateTime, nullable=False)
+    check_out = db.Column(db.DateTime, nullable=False)
+    confirmed = db.Column(db.Boolean, default=False)
+    total_price = db.Column(db.Float, nullable=False)
 
-class Service(Base):
+    guest = db.relationship("User", back_populates="reservations")
+    room = db.relationship("Room", back_populates="reservations")
+
+class Service(db.Model):
     __tablename__ = 'services'
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    price = Column(Float, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    price = db.Column(db.Float, nullable=False)
 
-class ExtraService(Base):
+class ExtraService(db.Model):
     __tablename__ = 'extra_services'
-    id = Column(Integer, primary_key=True)
-    reservation_id = Column(Integer, ForeignKey('reservations.id'), nullable=False)
-    service_id = Column(Integer, ForeignKey('services.id'), nullable=False)
-    quantity = Column(Integer, default=1)
-    reservation = relationship("Reservation")
-    service = relationship("Service")
+    id = db.Column(db.Integer, primary_key=True)
+    reservation_id = db.Column(db.Integer, db.ForeignKey('reservations.id'), nullable=False)
+    service_id = db.Column(db.Integer, db.ForeignKey('services.id'), nullable=False)
+    quantity = db.Column(db.Integer, default=1)
 
-class Invoice(Base):
+    reservation = db.relationship("Reservation")
+    service = db.relationship("Service")
+
+class Invoice(db.Model):
     __tablename__ = 'invoices'
-    id = Column(Integer, primary_key=True)
-    reservation_id = Column(Integer, ForeignKey('reservations.id'), nullable=False)
-    total_amount = Column(Float, nullable=False)
-    issued_at = Column(DateTime, default=datetime.utcnow)
-    paid = Column(Boolean, default=False)
-    reservation = relationship("Reservation")
+    id = db.Column(db.Integer, primary_key=True)
+    reservation_id = db.Column(db.Integer, db.ForeignKey('reservations.id'), nullable=False)
+    total_amount = db.Column(db.Float, nullable=False)
+    issued_at = db.Column(db.DateTime, default=datetime.utcnow)
+    paid = db.Column(db.Boolean, default=False)
+    
+    reservation = db.relationship("Reservation")
