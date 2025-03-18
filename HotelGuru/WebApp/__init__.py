@@ -3,11 +3,16 @@ from config import db_config
 from urllib.parse import quote_plus
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy.orm import DeclarativeBase
+
+class Base(DeclarativeBase):
+    pass
 
 app = Flask(__name__)
 
 # required for web forms
 app.config["SECRET_KEY"] = "SecretKey123"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///Hotel.db"
 
 # required for SQLAlchemy
 config = db_config()
