@@ -14,11 +14,6 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "SecretKey123"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///Hotel.db"
 
-# required for SQLAlchemy
-config = db_config()
-db_uri = "mysql+mysqlconnector://%s:%s@%s/%s?charset=utf8mb4" % \
-    (config["user"], quote_plus(config["password"]), config["host"], config["database"])
-app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= False
 
 db = SQLAlchemy(app)
