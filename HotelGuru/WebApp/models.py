@@ -1,7 +1,7 @@
 from WebApp import db
 from datetime import datetime
 
-class User(db.Model):
+class Users(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -12,7 +12,7 @@ class User(db.Model):
 
     reservations = db.relationship("Reservation", back_populates="guest")
 
-class Room(db.Model):
+class Rooms(db.Model):
     __tablename__ = 'rooms'
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String, unique=True, nullable=False)
