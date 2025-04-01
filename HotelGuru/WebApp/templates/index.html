@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Hotel Guru</title>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    HEllo világ ez az index oldal
-<a href="/login">Login</a>
-
-    
+    <h1>Welcome to the Hotel Guru</h1>
+    <form action="/search" method="GET">
+        <input type="text" name="location" placeholder="Enter location" required>
+        <input type="date" name="checkin" required>
+        <input type="date" name="checkout" required>
+        <button type="submit">Search</button>
+    </form>
+    <a href="/login">Login</a>
 </body>
 </html>
