@@ -26,7 +26,7 @@ class UserService:
         except Exception as ex:
             return False, "Incorrect User data!"
         return True, UserResponseSchema().dump(user)
-        
+    """ 
     @staticmethod
     def user_login(request):
         try:
@@ -36,7 +36,7 @@ class UserService:
         except Exception as ex:
             return False, "Incorrect Login data!"
         return True, UserResponseSchema().dump(user)
-
+    """"
     @staticmethod
     def user_list_roles():
         roles = db.session.query(Role).all()

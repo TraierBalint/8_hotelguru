@@ -17,6 +17,7 @@ def user_registrate(json_data):
     success, response = UserService.user_registrate(json_data)
     if success:
         return response, 200
+
     raise HTTPError(message=response, status_code=400)
 
     
@@ -30,6 +31,8 @@ def user_login(json_data):
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
+
+
 
 
 @bp.get('/roles')
