@@ -3,9 +3,6 @@ from apiflask.fields import String, Email, Nested, Integer, List
 from apiflask.validators import Length, OneOf, Email
 from WebApp.models.users import User
 
-
-
-
 class AddressSchema(Schema):
     city= fields.String()
     street= fields.String()
