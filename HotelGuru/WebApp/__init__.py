@@ -1,3 +1,25 @@
+from apiflask import APIFlask
+from config import Config
+from app.extensions import db
+from app.models import *
+
+def create_app(config_class=Config):
+    app = APIFlask(__name__, json_errors = True, 
+               title="HotelGuru API",
+               docs_path="/swagger")
+    app.config.from_object(config_class)
+
+    db.init_app(app)
+    
+    from flask_migrate import Migrate
+    migrate = Migrate(app, db, render_as_batch=True)
+    
+    from app.blueprints import bp as bp_default
+    app.register_blueprint(bp_default, url_prefix='/api')
+
+    return app
+
+"""
 from flask import Flask
 from config import db_config
 from urllib.parse import quote_plus
@@ -20,3 +42,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 from WebApp import routes, models, apiroutes
+"""
