@@ -1,5 +1,6 @@
 import configparser
 
+
 def db_config(filename='config.ini', section='Database'):
     config = configparser.ConfigParser()
     config.read(filename)
