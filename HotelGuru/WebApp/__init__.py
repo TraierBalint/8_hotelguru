@@ -1,7 +1,7 @@
 from apiflask import APIFlask
 from config import Config
-from app.extensions import db
-from app.models import *
+from WebApp.extensions import db
+from WebApp.models import *
 
 def create_app(config_class=Config):
     app = APIFlask(__name__, json_errors = True, 
@@ -14,7 +14,7 @@ def create_app(config_class=Config):
     from flask_migrate import Migrate
     migrate = Migrate(app, db, render_as_batch=True)
     
-    from app.blueprints import bp as bp_default
+    from WebApp.blueprints import bp as bp_default
     app.register_blueprint(bp_default, url_prefix='/api')
 
     return app
