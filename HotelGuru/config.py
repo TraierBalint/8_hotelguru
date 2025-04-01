@@ -1,13 +1,10 @@
-import configparser
+import os
+
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-def db_config(filename='config.ini', section='Database'):
-    config = configparser.ConfigParser()
-    config.read(filename)
-    
-    return {
-        'host' : config.get(section, 'host'),
-        'user' : config.get(section, 'user'),
-        'password' : config.get(section, 'password'),
-        'database' : config.get(section, 'database')
-    }
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY') or "my secret key"
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')\
+        or 'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
