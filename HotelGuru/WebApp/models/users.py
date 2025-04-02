@@ -1,4 +1,6 @@
-from WebApp import db
+
+from WebApp.extensions import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -10,3 +12,12 @@ class User(db.Model):
     role = db.Column(db.String, nullable=False)
 
     reservations = db.relationship("Reservation", back_populates="guest")
+    
+    def __repr__(self) -> str:
+        return f"User(id={self.id!r}, name={self.name!s}, email={self.email!r})"
+    
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+        
+    def check_password(self, password):
+        return check_password_hash(self.password, password)

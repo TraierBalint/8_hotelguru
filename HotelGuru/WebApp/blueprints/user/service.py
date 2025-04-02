@@ -15,8 +15,8 @@ class UserService:
             request["address"] = User.address(**request["address"])
             user = User(**request)
             user.set_password(user.password)
-            user.roles.append(
-                db.session.execute(select(User.role).filter_by(name="User")).scalar_one()            
+            user.role.append(
+                db.session.execute(select(user.role).filter_by(name="User")).scalar_one()            
                 )
             db.session.add(user)
             db.session.commit()
@@ -37,14 +37,15 @@ class UserService:
     @staticmethod
     def user_list_roles():
         roles = db.session.query(User.role).all()
-        return True, RoleSchema().dump(obj=roles, many=True)
+        return True, RoleSchema().dump(obj=roles, many=True)#nem tudom nekünk kell-e mert nincs Role adatmodellünk, 
+    #és a User.role az a NetPincér Role helyett van
     
     @staticmethod
     def list_user_roles(uid):
         user = db.session.get(User, uid)
         if user is None:
             return False, "User not found!"
-        return True, RoleSchema().dump(obj=user.roles, many=True)
+        return True, RoleSchema().dump(obj=user.role, many=True)
     
 
     @staticmethod
@@ -55,5 +56,5 @@ class UserService:
             db.session.commit()
         except Exception as ex:
             return False, "Incorrect Address data!"
-        return True, address.id
+        return True, address
         
