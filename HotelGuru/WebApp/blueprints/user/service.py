@@ -5,28 +5,25 @@ from WebApp.models.users import User
 from sqlalchemy import select
 
 class UserService:
-
-    pass
     
-    """
     @staticmethod
     def user_registrate(request):
         try:
             if db.session.execute(select(User).filter_by(email=request["email"])).scalar_one_or_none():
                 return False, "E-mail already exist!"
 
-            request["address"] = Address(**request["address"])
+            request["address"] = User.address(**request["address"])
             user = User(**request)
             user.set_password(user.password)
             user.roles.append(
-                db.session.execute(select(Role).filter_by(name="User")).scalar_one()            
+                db.session.execute(select(User.role).filter_by(name="User")).scalar_one()            
                 )
             db.session.add(user)
             db.session.commit()
         except Exception as ex:
             return False, "Incorrect User data!"
         return True, UserResponseSchema().dump(user)
-    """ 
+    
     @staticmethod
     def user_login(request):
         try:
@@ -36,10 +33,10 @@ class UserService:
         except Exception as ex:
             return False, "Incorrect Login data!"
         return True, UserResponseSchema().dump(user)
-    """"
+    
     @staticmethod
     def user_list_roles():
-        roles = db.session.query(Role).all()
+        roles = db.session.query(User.role).all()
         return True, RoleSchema().dump(obj=roles, many=True)
     
     @staticmethod
@@ -53,10 +50,10 @@ class UserService:
     @staticmethod
     def user_add_address(request):
         try:
-            address = Address(**request)
+            address = User.address(**request)
             db.session.add(address)
             db.session.commit()
         except Exception as ex:
             return False, "Incorrect Address data!"
-        return True, address.id"
-        """
+        return True, address.id
+        

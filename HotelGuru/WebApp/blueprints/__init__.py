@@ -10,9 +10,6 @@ def index():
 from WebApp.blueprints.user import bp as bp_user
 bp.register_blueprint(bp_user, url_prefix='/user')
 
-from WebApp.blueprints.user import routes   
-from WebApp.models import *
-
 """from app.blueprints.restaurant import bp as bp_restaurant
 bp.register_blueprint(bp_restaurant, url_prefix='/restaurant')
 
