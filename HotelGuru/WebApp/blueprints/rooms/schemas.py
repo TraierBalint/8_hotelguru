@@ -15,4 +15,10 @@ class RoomsResponseSchema(Schema):
     price = fields.Float()
 
 
+class RoomsRequestSchema(Schema):
+    number = fields.Integer()
+    type = fields.String()
+    status = fields.String()
+    price = fields.Float()
+
    

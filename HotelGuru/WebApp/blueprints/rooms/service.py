@@ -24,5 +24,18 @@ class RoomsService:
             return False, "room_update() error!"
         return True, "OK"
     
+    @staticmethod  # Szoba hozzáadás
+    # ezt az egészet a rooms/routes.py-ban hívjuk meg a room_add_new() függvényben
+    def room_add(request):
+        try:
+        
+            room = Rooms(**request)
+            db.session.add(room)
+            db.session.commit()
+            
+        except Exception as ex:
+            return False, "room_add() error!"
+        return True, RoomsResponseSchema().dump(room)
+    
 
     
