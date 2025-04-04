@@ -10,10 +10,10 @@ def index():
 from WebApp.blueprints.user import bp as bp_user
 bp.register_blueprint(bp_user, url_prefix='/user')
 
-"""from app.blueprints.restaurant import bp as bp_restaurant
-bp.register_blueprint(bp_restaurant, url_prefix='/restaurant')
+from WebApp.blueprints.rooms import bp as bp_rooms
+bp.register_blueprint(bp_rooms, url_prefix='/rooms')
 
-
+"""
 from app.blueprints.food import bp as bp_food
 bp.register_blueprint(bp_food, url_prefix='/food')
 
