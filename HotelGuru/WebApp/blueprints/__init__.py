@@ -13,10 +13,11 @@ bp.register_blueprint(bp_user, url_prefix='/user')
 from WebApp.blueprints.rooms import bp as bp_rooms
 bp.register_blueprint(bp_rooms, url_prefix='/rooms')
 
-"""
-from app.blueprints.food import bp as bp_food
-bp.register_blueprint(bp_food, url_prefix='/food')
 
+from WebApp.blueprints.reservation import bp as bp_reservation
+bp.register_blueprint(bp_reservation, url_prefix='/reservation')
+
+"""""
 from app.blueprints.order import bp as bp_order
 bp.register_blueprint(bp_order, url_prefix='/order')
 
