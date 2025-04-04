@@ -37,5 +37,21 @@ class RoomsService:
             return False, "room_add() error!"
         return True, RoomsResponseSchema().dump(room)
     
+    @staticmethod # Szoba frisítése id alapján
+    # ezt az egészet a rooms/routes.py-ban hívjuk meg a room_update() függvényben
+    def room_update(rid, request):
+        try:
+            room = db.session.get(Rooms, rid)
+            if room:
+                room.number = int(request["number"])
+                room.type = request["type"]
+                room.status = request["status"]
+                room.price = float(request["price"])
+                db.session.commit()
+            
+        except Exception as ex:
+            return False, "room_update() error!"
+        return True, RoomsResponseSchema().dump(room)
+    
 
     

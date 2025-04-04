@@ -32,3 +32,12 @@ def room_add_new(json_data):
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
+
+@bp.put('/update/<int:rid>') # Szoba frisítése id alapján
+@bp.input(RoomsRequestSchema, location="json")
+@bp.output(RoomsResponseSchema)
+def room_update(rid, json_data):
+    success, response = RoomsService.room_update(rid, json_data)
+    if success:
+        return response, 200
+    raise HTTPError(message=response, status_code=400)
