@@ -20,4 +20,23 @@ class ReservationService:
             return False, "reservation_add() error!"
         return True, ReservationResponseSchema().dump(reservation)
     
+    @staticmethod #a foglalásban  módosítunk
+    # ezt az egészet a reservation/routes.py-ban hívjuk meg a reservation_update() függvényben
+    def reservation_update(rid, request):
+        diffference = (datetime.today().strftime('%Y-%m-%d') - reservation.check_in).days   #kiszámitja a két dátum közötti különbséget     
+        try:
+            reservation = db.session.get(Reservation, rid)
+            if reservation:
+                reservation.check_in = request["start_date"]
+                reservation.check_out = request["end_date"]
+                reservation.room_id = request["room_id"]
+                
+                db.session.commit()
+
+            elif diffference > 7: # 7 napnál régebbi foglalásokat nem lehet törölni
+                return False, "Reservation cannot be canceld cause beyond 1 weeks to check in!"
+        except Exception as ex:
+            return False, "reservation_update() error!"
+        return True, ReservationResponseSchema().dump(reservation)
+    
     
