@@ -14,3 +14,10 @@ def rooms_list_all():
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
+
+@bp.delete('/delete/<int:rid>') # Szoba törlés rid alapján
+def room_delete(rid):
+    success, response = RoomsService.room_delete(rid)
+    if success:
+        return response, 200
+    raise HTTPError(message=response, status_code=400)

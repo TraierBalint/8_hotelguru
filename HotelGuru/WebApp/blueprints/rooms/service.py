@@ -11,5 +11,18 @@ class RoomsService:
         rooms = db.session.execute( select(Rooms).filter(Rooms.deleted.is_(0))).scalars()
         return True, RoomsResponseSchema().dump(rooms, many = True) 
     
+    @staticmethod #Szoba törlés
+    # ezt az egészet a rooms/routes.py-ban hívjuk meg a room_delete() függvényben
+    def room_delete(rid):
+        try:
+            room = db.session.get(Rooms, rid)
+            if room:
+                room.deleted = 1
+                db.session.commit()
+            
+        except Exception as ex:
+            return False, "room_update() error!"
+        return True, "OK"
+    
 
     
