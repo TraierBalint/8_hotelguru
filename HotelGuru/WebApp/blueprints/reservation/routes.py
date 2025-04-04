@@ -31,4 +31,12 @@ def reservation_update(rid, json_data):
         return response, 200
     raise HTTPError(message=response, status_code=400)
 
+@bp.delete('/delete/<int:rid>')  # foglalás törlése
+@bp.doc(tags=["reservation"])
+def reservation_delete(rid):
+    success, response = ReservationService.reservation_delete(rid)
+    if success:
+        return response, 200
+    raise HTTPError(message=response, status_code=400)
+
 

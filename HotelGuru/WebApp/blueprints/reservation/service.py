@@ -39,4 +39,16 @@ class ReservationService:
             return False, "reservation_update() error!"
         return True, ReservationResponseSchema().dump(reservation)
     
+    @staticmethod  
+    def reservation_delete(rid): # foglalás törlés
+    # ezt az egészet a reservation/routes.py-ban hívjuk meg a reservation_delete() függvényben
+        try:
+            reservation = db.session.get(Reservation, rid)
+            if reservation:
+                reservation.deleted = 1
+                db.session.commit()
+        except Exception as ex:
+            return False, "reservation_delete() error!"
+        return True, "OK"
+    
     
