@@ -1,4 +1,4 @@
-from WebApp.blueprints.rooms.schemas import RoomsResponseSchema
+from WebApp.blueprints.rooms.schemas import RoomsResponseSchema, RoomsListSchema
 from WebApp.extensions import db
 from WebApp.models.rooms import Rooms
 from sqlalchemy import select
@@ -52,6 +52,18 @@ class RoomsService:
         except Exception as ex:
             return False, "room_update() error!"
         return True, RoomsResponseSchema().dump(room)
-    
+ 
 
-    
+    @staticmethod # Szoba listázása típusa alapján
+    # ezt az egészet a rooms/routes.py-ban hívjuk meg a room_list_type() függvényben
+    def room_list_type(type_name):
+        if type_name is None:
+            rooms = db.session.execute(select(Rooms).filter(Rooms.deleted.is_(0))).scalars()
+        else:
+            rooms = db.session.execute(
+                select(Rooms).filter(
+                    Rooms.deleted.is_(0),
+                    Rooms.type == type_name
+                )).scalars()
+
+        return True, RoomsListSchema().dump(rooms, many=True)

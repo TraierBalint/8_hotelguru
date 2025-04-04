@@ -1,6 +1,7 @@
 from WebApp.blueprints.rooms import bp
 from WebApp.blueprints.rooms.schemas import RoomsListSchema , RoomsRequestSchema, RoomsResponseSchema
 from WebApp.blueprints.rooms.service import RoomsService
+from apiflask.fields import String, Integer
 
 from apiflask import HTTPError
 
@@ -38,6 +39,15 @@ def room_add_new(json_data):
 @bp.output(RoomsResponseSchema)
 def room_update(rid, json_data):
     success, response = RoomsService.room_update(rid, json_data)
+    if success:
+        return response, 200
+    raise HTTPError(message=response, status_code=400)
+
+
+@bp.get('/list/<string:rtype>')  # Szoba listázása típusa alapján
+@bp.output(RoomsListSchema(many=True))
+def room_list_type(rtype):
+    success, response = RoomsService.room_list_type(rtype)
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
