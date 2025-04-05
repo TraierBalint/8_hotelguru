@@ -34,7 +34,7 @@ class RoomsService:
             db.session.commit()
             
         except Exception as ex:
-            return False, "room_add() error!"
+            return False, str(ex)#"room_add() error!"
         return True, RoomsResponseSchema().dump(room)
     
     @staticmethod # Szoba frisítése id alapján
