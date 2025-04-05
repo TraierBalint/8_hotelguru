@@ -15,14 +15,14 @@ class UserRequestSchema(Schema):
     email = String(validate=Email())
     password = fields.String()
     phone = fields.String()
-    address = fields.String()
+    address = fields.Nested(AddressSchema)
 
 
 class UserResponseSchema(Schema):
     id = fields.Integer()
     name = fields.String()
     email = fields.String()
-    address = fields.String()
+    address = fields.Nested(AddressSchema)
     
 
 class UserLoginSchema(Schema):

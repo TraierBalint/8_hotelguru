@@ -17,13 +17,13 @@ class UserService:
             request["address"] = Address(**request["address"])
             user = User(**request)
             user.set_password(user.password)
-            user.role.append(
+            user.roles.append(
                 db.session.execute(select(Role).filter_by(name="User")).scalar_one()            
                 )
             db.session.add(user)
             db.session.commit()
         except Exception as ex:
-            return False, "Incorrect User data!"
+            return False, str(ex)#"Incorrect User data!"
         return True, UserResponseSchema().dump(user)
     
     @staticmethod

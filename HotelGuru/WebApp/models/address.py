@@ -13,4 +13,4 @@ class Address(db.Model):
     postalcode : Mapped[int]
     
     user : Mapped["User"] = relationship(back_populates="address")
-    
+    reservation: Mapped[List["Reservation"]] = relationship(back_populates="address")
