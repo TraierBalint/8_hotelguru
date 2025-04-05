@@ -14,7 +14,7 @@ class ExtraService(db.Model):
     service_id: Mapped[int] = mapped_column(ForeignKey("services.id"), nullable=False)
     quantity: Mapped[int] = mapped_column(default=1)
 
-    service: Mapped["Service"] = relationship(back_populates=("service"))
+    service: Mapped["Service"] = relationship(back_populates=("services"))
     reservation: Mapped["Reservation"] = relationship(back_populates=("reservation"))
 
 
