@@ -15,3 +15,10 @@ db.session.add_all([ Role(name="Administrator"),
                      Role(name="Receptionist"), 
                      Role(name ="User") ])
 db.session.commit()
+#User
+from WebApp.models.users import User,  UserRole
+from WebApp.models.address import Address
+from WebApp.models.reservation import Reservation,StatusEnum
+from WebApp.models.invoice import Invoice
+from WebApp.models.rooms import Rooms, StatusEnum
+from WebApp.models.extraservice import ExtraService
