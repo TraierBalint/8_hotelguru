@@ -3,10 +3,10 @@ from apiflask.fields import String, Email, Nested, Integer, List
 from apiflask.validators import Length, OneOf, Email
 from WebApp.models.users import User
 
-"""class AddressSchema(Schema):
+class AddressSchema(Schema):
     city= fields.String()
     street= fields.String()
-    postalcode = fields.Integer()"""
+    postalcode = fields.Integer()
 
 
 class UserRequestSchema(Schema):
