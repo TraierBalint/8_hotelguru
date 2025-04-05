@@ -8,7 +8,7 @@ from apiflask import HTTPError
 
 @bp.route('/')
 def index():
-    return 'This is The Rooms Blueprint'
+    return 'This is The reservation Blueprint'
 
 
 @bp.post('/add')  # foglalás hozzáadása

@@ -17,10 +17,9 @@ bp.register_blueprint(bp_rooms, url_prefix='/rooms')
 from WebApp.blueprints.reservation import bp as bp_reservation
 bp.register_blueprint(bp_reservation, url_prefix='/reservation')
 
-"""""
-from app.blueprints.order import bp as bp_order
-bp.register_blueprint(bp_order, url_prefix='/order')
-
+from WebApp.blueprints.extraservice import bp as bp_extraservice
+bp.register_blueprint(bp_extraservice, url_prefix='/extraservice')
+"""
 from app.blueprints.chef import bp as bp_chef
 bp.register_blueprint(bp_chef, url_prefix='/chef')
 
