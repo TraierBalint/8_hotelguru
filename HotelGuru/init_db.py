@@ -11,9 +11,9 @@ app.app_context().push()
 #Role
 from WebApp.models.role import Role
 
-db.session.add_all([ Role(name="Administrator"), 
+"""db.session.add_all([ Role(name="Administrator"), 
                      Role(name="Receptionist"), 
-                     Role(name ="User") ])
+                     Role(name ="User") ])"""
 db.session.commit()
 #User
 from WebApp.models.users import User,  UserRole
