@@ -43,7 +43,7 @@ class RoomsService:
         try:
             room = db.session.get(Rooms, rid)
             if room:
-                room.number = int(request["number"])
+                room.name = str(request["name"])
                 room.type = request["type"]
                 room.status = request["status"]
                 room.price = float(request["price"])
