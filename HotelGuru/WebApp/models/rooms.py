@@ -10,7 +10,7 @@ from sqlalchemy.types import String, Integer
 from sqlalchemy import Boolean, ForeignKey
 
 
-class StatusEnum(enum.Enum):
+class StatusEnum(enum.Enum):  
     SingleRoom  = 0,
     DoubleRoom  = 1,
     TwinRoom    = 2,

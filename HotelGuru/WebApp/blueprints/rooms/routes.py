@@ -9,7 +9,7 @@ from apiflask import HTTPError
 def index():
     return 'This is The Rooms Blueprint'
 
-@bp.get('/list/')  # Ki listázas az összes szobát, amelyik szobát nem töröltünk ki
+@bp.get('/list')  # Ki listázas az összes szobát, amelyik szobát nem töröltünk ki
 @bp.output(RoomsListSchema(many = True))
 def rooms_list_all():
     success, response = RoomsService.rooms_list_all()

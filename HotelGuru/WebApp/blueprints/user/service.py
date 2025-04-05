@@ -47,7 +47,7 @@ class UserService:
         user = db.session.get(User, uid)
         if user is None:
             return False, "User not found!"
-        return True, RoleSchema().dump(obj=Role, many=True)
+        return True, RoleSchema().dump(obj=user.roles, many=True)
     
 
     @staticmethod
