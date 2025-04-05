@@ -1,18 +1,34 @@
 
-from WebApp.extensions import db
+from WebApp.extensions import db, Base
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import String, Integer
+from sqlalchemy import ForeignKey, Column, Table
+from typing import List, Optional
 from werkzeug.security import generate_password_hash, check_password_hash
 
-class User(db.Model):#kelleni fog password
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
-    phone = db.Column(db.String, nullable=True)
-    address = db.Column(db.String, nullable=True)
-    role = db.Column(db.String, nullable=False)
+UserRole = Table(
+    "userroles",
+    Base.metadata,
+    Column("user_id", ForeignKey("users.id")),
+    Column("role_id", ForeignKey("roles.id"))
+)
 
-    reservations = db.relationship("Reservation", back_populates="guest")
+
+class User(db.Model):
+    __tablename__ = "users"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(30))
+    email: Mapped[Optional[str]]
+    password: Mapped[str] = mapped_column(String(30))
+    phone : Mapped[str] = mapped_column(String(30))
     
+    roles: Mapped[List["Role"]] = relationship(secondary=UserRole, back_populates="users")
+    
+   
+    address_id: Mapped[int] = mapped_column(ForeignKey("addresses.id"))
+    address : Mapped["Address"] = relationship(back_populates="user", lazy=True)
+    
+
     def __repr__(self) -> str:
         return f"User(id={self.id!r}, name={self.name!s}, email={self.email!r})"
     
@@ -21,3 +37,6 @@ class User(db.Model):#kelleni fog password
         
     def check_password(self, password):
         return check_password_hash(self.password, password)
+  
+       
+
