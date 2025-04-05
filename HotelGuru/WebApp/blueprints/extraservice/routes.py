@@ -6,7 +6,7 @@ from WebApp.blueprints.extraservice.service import ExtraService
 
 @bp.route('/')
 def index():
-    return 'This is The Rooms Blueprint'
+    return 'This is The extraservice Blueprint'
 
 @bp.get('/list/')  # Ki listázas az összes extraservicet
 @bp.output(ExtraServiceListSchema(many = True))
