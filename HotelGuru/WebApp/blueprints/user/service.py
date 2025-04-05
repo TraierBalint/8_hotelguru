@@ -1,6 +1,8 @@
 from WebApp.extensions import db
 from WebApp.blueprints.user.schemas import UserResponseSchema, RoleSchema
 from WebApp.models.users import User
+from WebApp.models.address import Address
+from WebApp.models.role import Role
 
 from sqlalchemy import select
 
@@ -12,11 +14,11 @@ class UserService:
             if db.session.execute(select(User).filter_by(email=request["email"])).scalar_one_or_none():
                 return False, "E-mail already exist!"
 
-            request["address"] = User.address(**request["address"])
+            request["address"] = Address(**request["address"])
             user = User(**request)
             user.set_password(user.password)
             user.role.append(
-                db.session.execute(select(user.role).filter_by(name="User")).scalar_one()            
+                db.session.execute(select(Role).filter_by(name="User")).scalar_one()            
                 )
             db.session.add(user)
             db.session.commit()
@@ -36,7 +38,7 @@ class UserService:
     
     @staticmethod
     def user_list_roles():
-        roles = db.session.query(User.role).all()
+        roles = db.session.query(Role).all()
         return True, RoleSchema().dump(obj=roles, many=True)#nem tudom nekünk kell-e mert nincs Role adatmodellünk, 
     #és a User.role az a NetPincér Role helyett van
     
@@ -45,13 +47,13 @@ class UserService:
         user = db.session.get(User, uid)
         if user is None:
             return False, "User not found!"
-        return True, RoleSchema().dump(obj=user.role, many=True)
+        return True, RoleSchema().dump(obj=Role, many=True)
     
 
     @staticmethod
     def user_add_address(request):
         try:
-            address = User.address(**request)
+            address = Address(**request)
             db.session.add(address)
             db.session.commit()
         except Exception as ex:
