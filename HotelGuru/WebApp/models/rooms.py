@@ -1,11 +1,28 @@
-from WebApp import db
 
-class Rooms(db.Model):#price-t int-re átállítani mert most string
-    __tablename__ = 'rooms'
-    id = db.Column(db.Integer, primary_key=True)
-    number = db.Column(db.String, unique=True, nullable=False)
-    type = db.Column(db.String, nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String, default='available')
 
-    reservations = db.relationship("Reservation", back_populates="room")
+from __future__ import annotations
+import enum
+
+from WebApp.extensions import db
+from typing import List, Optional
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.types import String, Integer
+from sqlalchemy import Boolean, ForeignKey
+
+
+class StatusEnum(enum.Enum):
+    SingleRoom  = 0,
+    DoubleRoom  = 1,
+    TwinRoom    = 2,
+    Suites = 3,
+    ConnectingRoom= 4, 
+    DeluxRoom = 5
+
+class Rooms(db.Model):
+    __tablename__ = "Rooms"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(30)) 
+    type : Mapped[StatusEnum] = mapped_column()
+    price : Mapped[int]
+    status : Mapped[str] = mapped_column(default="available")
+    deleted : Mapped[int] = mapped_column(default = 0) # ez lehetséges hogy nem kell
