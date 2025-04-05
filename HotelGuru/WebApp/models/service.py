@@ -13,4 +13,4 @@ class Service(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] =mapped_column(nullable=False)
     price: Mapped[float] = mapped_column()
-    
+    extraservices: Mapped[List["ExtraService"]] = relationship(back_populates="service")

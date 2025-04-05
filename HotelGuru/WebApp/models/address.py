@@ -13,4 +13,4 @@ class Address(db.Model):
     postalcode : Mapped[int]
     
     user : Mapped["User"] = relationship(back_populates="address")
-    orders : Mapped[List["Order"]] = relationship(back_populates="address") 
+    

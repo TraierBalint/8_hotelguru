@@ -30,5 +30,9 @@ class Reservation(db.Model):
     address_id : Mapped[int] = mapped_column(ForeignKey("addresses.id"))
     address : Mapped["Address"] = relationship(back_populates="reservations")
     #items : Mapped[List["Rooms"]] = relationship(back_populates="Rooms", lazy=True) ebbe nem cagyok biztos 
+
+
+    extraservices: Mapped[List["ExtraService"]] = relationship(back_populates="reservation")
+    invoice: Mapped["Invoice"] = relationship(back_populates="reservation", uselist=False)
     
 
