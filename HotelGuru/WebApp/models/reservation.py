@@ -11,4 +11,4 @@ class Reservation(db.Model):
     total_price = db.Column(db.Float, nullable=False)
 
     guest = db.relationship("User", back_populates="reservations")
-    room = db.relationship("Room", back_populates="reservations")
+    room = db.relationship("Rooms", back_populates="reservations")#Room volt, átírtam Rooms-ra

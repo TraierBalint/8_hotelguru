@@ -1,6 +1,6 @@
 from WebApp import db
 
-class Rooms(db.Model):
+class Rooms(db.Model):#price-t int-re átállítani mert most string
     __tablename__ = 'rooms'
     id = db.Column(db.Integer, primary_key=True)
     number = db.Column(db.String, unique=True, nullable=False)
