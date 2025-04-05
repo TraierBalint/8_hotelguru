@@ -10,19 +10,20 @@ from sqlalchemy.types import String, Integer
 from sqlalchemy import Boolean, ForeignKey
 
 
-class StatusEnum(enum.Enum):  
+"""class StatusEnum(enum.Enum):  
     SingleRoom  = 0,
     DoubleRoom  = 1,
     TwinRoom    = 2,
     Suites = 3,
     ConnectingRoom= 4, 
     DeluxRoom = 5
+"""
 
 class Rooms(db.Model):
     __tablename__ = "Rooms"
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(30)) 
-    type : Mapped[StatusEnum] = mapped_column()
+    type : Mapped[str] = mapped_column()
     price : Mapped[int]
     status : Mapped[str] = mapped_column(default="available")
     deleted : Mapped[int] = mapped_column(default = 0) # ez lehetséges hogy nem kell
