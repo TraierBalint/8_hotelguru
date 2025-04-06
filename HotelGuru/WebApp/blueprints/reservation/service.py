@@ -17,7 +17,7 @@ class ReservationService:
             db.session.add(reservation)
             db.session.commit()
         except Exception as ex:
-            return False, "reservation_add() error!"
+            return False, str(ex)#"Incorrect Reservation data!"
         return True, ReservationResponseSchema().dump(reservation)
     
     @staticmethod #a foglalásban  módosítunk

@@ -30,7 +30,7 @@ class Reservation(db.Model):
     
     address_id: Mapped[int] = mapped_column(ForeignKey("addresses.id"))
     address: Mapped["Address"] = relationship(back_populates="reservation")
-    #items : Mapped[List["Rooms"]] = relationship(back_populates="Rooms", lazy=True) ebbe nem cagyok biztos 
+    items : Mapped[List["Rooms"]] = relationship(back_populates="Rooms", lazy=True)
     check_in: Mapped[str] = mapped_column(DateTime())
     check_out: Mapped[str] = mapped_column(DateTime())
 
