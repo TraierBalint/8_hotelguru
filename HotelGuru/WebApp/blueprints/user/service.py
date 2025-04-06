@@ -59,4 +59,22 @@ class UserService:
         except Exception as ex:
             return False, "Incorrect Address data!"
         return True, address
+    
+    #user törlés
+    @staticmethod
+    def user_delete(rid):
+        try:
+            user = db.session.get(User, rid)
+            if user:
+                db.session.delete(user)
+                db.session.commit()
+            
+        except Exception as ex:
+            return False, "user_update() error!"
+        return True, "OK"
         
+    #User listázás
+    @staticmethod
+    def user_list_all():
+        users = db.session.execute(select(User)).scalars().all()
+        return True, UserResponseSchema().dump(users, many = True) 

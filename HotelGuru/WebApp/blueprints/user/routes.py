@@ -65,4 +65,18 @@ def user_address_add(json_data):
     raise HTTPError(message=response, status_code=400)
 
 
+@bp.delete('/delete/<int:uid>') # User törlés uid alapján
+def user_delete(uid):
+    success, response = UserService.user_delete(uid)
+    if success:
+        return response, 200
+    raise HTTPError(message=response, status_code=400)
 
+
+@bp.get('/list')  # Ki listázas az összes usert, amelyik usert nem töröltünk ki
+@bp.output(UserResponseSchema(many = True))
+def user_list_all():
+    success, response = UserService.user_list_all()
+    if success:
+        return response, 200                                                            
+    raise HTTPError(message=response, status_code=400)
