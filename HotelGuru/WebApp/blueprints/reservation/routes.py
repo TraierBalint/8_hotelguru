@@ -36,7 +36,7 @@ def delete_reservation(rid):
         raise HTTPError(400, result)
     return {"message": result}
 
-@bp.get('/')
+@bp.get('/list')
 @bp.output(ReservationResponseSchema(many=True))
 def list_reservations():
     success, result = ReservationService.reservation_list_all()

@@ -108,7 +108,7 @@ class ReservationService:
         ).scalars().all()
         for r in reservations:
             r.items = ReservationService.get_rooms_for_reservation(r.id)
-        return True, ReservationResponseSchema(many=True).dump(reservations)
+        return True, reservations
 
     @staticmethod
     def reservation_list_by_user(user_id):
