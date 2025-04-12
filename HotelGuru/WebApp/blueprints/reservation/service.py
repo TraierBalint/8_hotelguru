@@ -1,54 +1,129 @@
-from WebApp.extensions import db
-from WebApp.blueprints.reservation.schemas import ReservationResponseSchema, ReservationRequestSchema, ReservationItemSchema
-from datetime import datetime
 from WebApp.models.reservation import Reservation
-
+from WebApp.models.reservation_rooms import ReservationRoom
+from WebApp.models.rooms import Rooms
+from WebApp.extensions import db
+from WebApp.blueprints.reservation.schemas import ReservationResponseSchema, ReservationRequestSchema
+from WebApp.blueprints.rooms.schemas import RoomsListSchema
+from sqlalchemy import select
+from datetime import datetime
+from apiflask import APIBlueprint, HTTPError
+from flask import request
 from sqlalchemy import select, and_
+from marshmallow import post_dump
+
+
 
 
 
 class ReservationService:
-    
 
-    @staticmethod  #foglalás hozzáadása
-    def reservation_add(request): 
+    @staticmethod
+    def get_rooms_for_reservation(reservation_id):
+        room_ids = db.session.query(ReservationRoom.room_id).filter_by(reservation_id=reservation_id).all()
+        room_ids = [r[0] for r in room_ids]
+        rooms = db.session.execute(select(Rooms).where(Rooms.id.in_(room_ids))).scalars().all()
+        return rooms
+
+    @staticmethod
+    def reservation_add(request_data):
         try:
-            reservation = Reservation(**request)
+            check_in = request_data["check_in"]
+            check_out = request_data["check_out"]
+
+            items = request_data.pop("items", [])
+            for item in items:     #ez a rész nézzi meg hogy a szobák foglaltak e
+                room_id = item["room_id"]
+                conflict = db.session.execute(
+                    select(ReservationRoom)
+                    .join(Reservation)
+                    .filter(
+                        ReservationRoom.room_id == room_id,
+                        Reservation.check_out > check_in,
+                        Reservation.check_in < check_out
+                    )
+                ).scalars().all()
+
+                if conflict:
+                    return False, f"A szoba (id: {room_id}) már foglalt a megadott időszakban!"
+            reservation = Reservation(**request_data)
             db.session.add(reservation)
-            db.session.commit()
-        except Exception as ex:
-            return False, str(ex)#"Incorrect Reservation data!"
-        return True, ReservationResponseSchema().dump(reservation)
-    
-    @staticmethod #a foglalásban  módosítunk
-    # ezt az egészet a reservation/routes.py-ban hívjuk meg a reservation_update() függvényben
-    def reservation_update(rid, request):
-        diffference = (datetime.today().strftime('%Y-%m-%d') - reservation.check_in).days   #kiszámitja a két dátum közötti különbséget     
-        try:
-            reservation = db.session.get(Reservation, rid)
-            if reservation:
-                reservation.check_in = request["start_date"]
-                reservation.check_out = request["end_date"]
-                reservation.room_id = request["room_id"]
-                
-                db.session.commit()
+            db.session.flush()
 
-            elif diffference > 7: # 7 napnál régebbi foglalásokat nem lehet törölni
-                return False, "Reservation cannot be canceld cause beyond 1 weeks to check in!"
+            for item in items:
+                rr = ReservationRoom(reservation_id=reservation.id, room_id=item["room_id"])
+                db.session.add(rr)
+
+            db.session.commit()
+            reservation.items = ReservationService.get_rooms_for_reservation(reservation.id)
+            return True, reservation
+
         except Exception as ex:
-            return False, "reservation_update() error!"
-        return True, ReservationResponseSchema().dump(reservation)
-    
-    @staticmethod  
-    def reservation_delete(rid): # foglalás törlés
-    # ezt az egészet a reservation/routes.py-ban hívjuk meg a reservation_delete() függvényben
+            db.session.rollback()
+            return False, str(ex)
+        
+    @staticmethod
+    def reservation_update(rid, request_data):
+        try:
+            print("check_in type:", type(request_data["check_in"]))
+            reservation = db.session.get(Reservation, rid)
+            if not reservation:
+                return False, "Reservation not found"
+
+            difference = (reservation.check_in - datetime.today().date()).days
+
+            if difference < 0:
+                return False, 
+            if difference > 7:
+                return False,
+
+            reservation.check_in = request_data["check_in"]
+            reservation.check_out = request_data["check_out"]
+            db.session.commit()
+            reservation.items = ReservationService.get_rooms_for_reservation(reservation.id)
+            return True, ReservationResponseSchema().dump(reservation)
+
+        except Exception as ex:
+            db.session.rollback()
+            return False, str(ex)
+
+    @staticmethod
+    def reservation_delete(rid):
         try:
             reservation = db.session.get(Reservation, rid)
-            if reservation:
-                reservation.deleted = 1
-                db.session.commit()
+            if not reservation:
+                return False, 
+
+            db.session.delete(reservation)
+            db.session.commit()
+            return True, 
+
         except Exception as ex:
-            return False, "reservation_delete() error!"
-        return True, "OK"
-    
-    
+            db.session.rollback()
+            return False, str(ex)
+
+    @staticmethod
+    def reservation_list_all():
+        reservations = db.session.execute(
+            select(Reservation).order_by(Reservation.check_in.asc())
+        ).scalars().all()
+        for r in reservations:
+            r.items = ReservationService.get_rooms_for_reservation(r.id)
+        return True, ReservationResponseSchema(many=True).dump(reservations)
+
+    @staticmethod
+    def reservation_list_by_user(user_id):
+        reservations = db.session.execute(
+            select(Reservation).filter_by(user_id=user_id)
+        ).scalars().all()
+        for r in reservations:
+            r.items = ReservationService.get_rooms_for_reservation(r.id)
+        return True, ReservationResponseSchema(many=True).dump(reservations)
+
+    @staticmethod
+    def reservation_get_by_id(rid):
+        reservation = db.session.get(Reservation, rid)
+        if reservation is None:
+            return False, "Reservation not found"
+        reservation.items = ReservationService.get_rooms_for_reservation(reservation.id)
+        return True, ReservationResponseSchema().dump(reservation)
+

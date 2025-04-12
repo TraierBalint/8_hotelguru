@@ -21,15 +21,12 @@ from sqlalchemy import ForeignKey
     DeluxRoom   = 5""" 
 #Ez minek?
 
-class Reservation(db.Model):
+class Reservation(db.Model):  #nincs már benne az address id mert felesleges 
     __tablename__ = "reservations"
     id: Mapped[int] = mapped_column(primary_key=True)
     
     user_id: Mapped[Optional[int]] = mapped_column(ForeignKey("users.id"))
     user: Mapped[Optional["User"]] = relationship(back_populates="reservation")
-    
-    address_id: Mapped[int] = mapped_column(ForeignKey("addresses.id"))
-    address: Mapped["Address"] = relationship(back_populates="reservation")
     #items : Mapped[List["Rooms"]] = relationship(back_populates="Rooms", lazy=True)
     check_in: Mapped[Date] = mapped_column(Date())
     check_out: Mapped[Date] = mapped_column(Date())
