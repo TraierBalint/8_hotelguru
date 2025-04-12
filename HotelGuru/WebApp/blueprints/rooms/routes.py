@@ -44,10 +44,19 @@ def room_update(rid, json_data):
     raise HTTPError(message=response, status_code=400)
 
 
-@bp.get('/list/<string:rtype>')  # Szoba listázása típusa alapján
+@bp.get("/type/<string:type_name>")
 @bp.output(RoomsListSchema(many=True))
-def room_list_type(rtype):
-    success, response = RoomsService.room_list_type(rtype)
-    if success:
-        return response, 200
-    raise HTTPError(message=response, status_code=400)
+def room_list_by_type(type_name):
+    success, result = RoomsService.room_list_type(type_name)
+    if not success:
+        raise HTTPError(400, result)
+    return result
+
+
+@bp.get("/<int:rid>")  # Szoba listázása id alapján
+@bp.output(RoomsResponseSchema)
+def room_get_by_id(rid):
+    success, result = RoomsService.room_get_by_id(rid)
+    if not success:
+        raise HTTPError(404, result)
+    return result
