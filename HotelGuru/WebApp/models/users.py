@@ -9,8 +9,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 UserRole = Table(
     "userroles",
     Base.metadata,
-    Column("user_id", ForeignKey("users.id")),
-    Column("role_id", ForeignKey("roles.id"))
+    Column("user_id", ForeignKey("users.id", name="fk_userroles_user_id")),
+    Column("role_id", ForeignKey("roles.id", name="fk_userroles_role_id"))
 )
 
 

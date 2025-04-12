@@ -6,3 +6,4 @@ import WebApp.models.service
 import WebApp.models.users
 import WebApp.models.role
 import WebApp.models.address
+import WebApp.models.reservation_rooms

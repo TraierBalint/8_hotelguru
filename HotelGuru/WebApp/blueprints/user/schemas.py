@@ -8,6 +8,12 @@ class AddressSchema(Schema):
     street= fields.String()
     postalcode = fields.Integer()
 
+class AddAddressSchema(Schema):
+    user_id = fields.Integer()
+    city= fields.String()
+    street= fields.String()
+    postalcode = fields.Integer()
+
 
 class UserRequestSchema(Schema):
         

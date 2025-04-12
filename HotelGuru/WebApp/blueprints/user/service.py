@@ -51,13 +51,20 @@ class UserService:
     
 
     @staticmethod
-    def user_add_address(request):
+    def user_update_address(request):
         try:
-            address = Address(**request)
-            db.session.add(address)
+            user = db.session.get(User, request["user_id"])
+            if not user:
+                return False, "User not found!"
+            address = Address(
+                city=request["city"],
+                street=request["street"],
+                postalcode=request["postalcode"]
+            )
+            user.address = address
             db.session.commit()
         except Exception as ex:
-            return False, "Incorrect Address data!"
+            return False, str(ex)
         return True, address
     
     #user törlés

@@ -8,7 +8,7 @@ from os import name
 from WebApp.extensions import db
 from typing import List, Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import String, Integer, DateTime
+from sqlalchemy.types import String, Integer, Date
 from sqlalchemy import ForeignKey
 
 
@@ -31,10 +31,12 @@ class Reservation(db.Model):
     address_id: Mapped[int] = mapped_column(ForeignKey("addresses.id"))
     address: Mapped["Address"] = relationship(back_populates="reservation")
     #items : Mapped[List["Rooms"]] = relationship(back_populates="Rooms", lazy=True)
-    check_in: Mapped[str] = mapped_column(DateTime())
-    check_out: Mapped[str] = mapped_column(DateTime())
+    check_in: Mapped[Date] = mapped_column(Date())
+    check_out: Mapped[Date] = mapped_column(Date())
 
     extraservices: Mapped[List["ExtraService"]] = relationship(back_populates="reservation")
     invoice: Mapped["Invoice"] = relationship(back_populates="reservation", uselist=False)
+    reservation_rooms: Mapped[List["ReservationRoom"]] = relationship(back_populates="reservation")
     
+        
 

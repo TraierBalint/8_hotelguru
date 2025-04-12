@@ -27,3 +27,4 @@ class Rooms(db.Model):
     price : Mapped[int]
     status : Mapped[str] = mapped_column(default="available")
     deleted : Mapped[int] = mapped_column(default = 0) # ez lehetséges hogy nem kell
+    reservation_rooms: Mapped[List["ReservationRoom"]] = relationship(back_populates="room")

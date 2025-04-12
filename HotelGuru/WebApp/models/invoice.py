@@ -3,7 +3,7 @@ from __future__ import annotations
 from WebApp.extensions import db
 from typing import List, Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy.types import String, Integer
+from sqlalchemy.types import String, Integer, Date
 from sqlalchemy import ForeignKey
 
 class Invoice(db.Model):
@@ -12,7 +12,7 @@ class Invoice(db.Model):
     reservation_id: Mapped[int] = mapped_column(ForeignKey("reservations.id"), nullable=False)
     
     total_amount:  Mapped[float] = mapped_column( nullable=False)
-    issued_at: Mapped[str] = mapped_column( nullable=False)  # Date of issue
+    issued_at: Mapped[Date] = mapped_column(Date(), nullable=False)  # Date of issue
     paid: Mapped[bool] = mapped_column( default=False)  # Payment status
 
     reservation: Mapped["Reservation"] = relationship(back_populates="invoice")
