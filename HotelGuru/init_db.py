@@ -11,14 +11,14 @@ app.app_context().push()
 #Role
 from WebApp.models.role import Role
 
-"""db.session.add_all([ Role(name="Administrator"), 
+db.session.add_all([ Role(name="Administrator"), 
                      Role(name="Receptionist"), 
-                     Role(name ="User") ])"""
+                     Role(name ="User") ])
 db.session.commit()
 #User
 from WebApp.models.users import User,  UserRole
 from WebApp.models.address import Address
-from WebApp.models.reservation import Reservation,StatusEnum
+from WebApp.models.reservation import Reservation
 from WebApp.models.invoice import Invoice
-from WebApp.models.rooms import Rooms, StatusEnum
+from WebApp.models.rooms import Rooms
 from WebApp.models.extraservice import ExtraService

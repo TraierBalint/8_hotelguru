@@ -19,10 +19,13 @@ class ReservationService:
 
     @staticmethod
     def get_rooms_for_reservation(reservation_id):
-        room_ids = db.session.query(ReservationRoom.room_id).filter_by(reservation_id=reservation_id).all()
-        room_ids = [r[0] for r in room_ids]
-        rooms = db.session.execute(select(Rooms).where(Rooms.id.in_(room_ids))).scalars().all()
-        return rooms
+        try:
+            room_ids = db.session.query(ReservationRoom.room_id).filter_by(reservation_id=reservation_id).all()
+            room_ids = [r[0] for r in room_ids]
+            rooms = db.session.execute(select(Rooms).where(Rooms.id.in_(room_ids))).scalars().all()
+            return True, rooms
+        except Exception as ex:
+            return False, str(ex)
 
     @staticmethod
     def reservation_add(request_data):
@@ -91,11 +94,11 @@ class ReservationService:
         try:
             reservation = db.session.get(Reservation, rid)
             if not reservation:
-                return False, 
+                return False, "Reservation not found"
 
             db.session.delete(reservation)
             db.session.commit()
-            return True, 
+            return True, "Reservation deleted successfully"
 
         except Exception as ex:
             db.session.rollback()

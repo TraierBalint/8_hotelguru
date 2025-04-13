@@ -1,5 +1,5 @@
 from WebApp.blueprints.reservation import bp
-from WebApp.blueprints.reservation.schemas import  ReservationRequestSchema, ReservationResponseSchema
+from WebApp.blueprints.reservation.schemas import  ReservationRequestSchema, ReservationResponseSchema,RoomsListSchema
 from WebApp.blueprints.reservation.service import ReservationService
 
 from apiflask import HTTPError
@@ -47,3 +47,11 @@ def list_reservations():
 def list_reservations_by_user(user_id):
     success, result = ReservationService.reservation_list_by_user(user_id)
     return result
+
+@bp.get('/rooms/<int:reservation_id>')
+@bp.output(RoomsListSchema(many=True))  
+def get_rooms_by_reservation(reservation_id):
+    success, rooms_or_error = ReservationService.get_rooms_for_reservation(reservation_id)
+    if not success:
+        return {"message": rooms_or_error}, 404
+    return rooms_or_error
