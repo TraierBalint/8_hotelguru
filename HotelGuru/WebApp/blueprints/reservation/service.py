@@ -118,7 +118,7 @@ class ReservationService:
         ).scalars().all()
         for r in reservations:
             r.items = ReservationService.get_rooms_for_reservation(r.id)
-        return True, ReservationResponseSchema(many=True).dump(reservations)
+        return True, reservations
 
     @staticmethod
     def reservation_get_by_id(rid):
@@ -126,5 +126,5 @@ class ReservationService:
         if reservation is None:
             return False, "Reservation not found"
         reservation.items = ReservationService.get_rooms_for_reservation(reservation.id)
-        return True, ReservationResponseSchema().dump(reservation)
+        return True, reservation
 

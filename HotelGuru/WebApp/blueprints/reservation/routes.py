@@ -55,3 +55,11 @@ def get_rooms_by_reservation(reservation_id):
     if not success:
         return {"message": rooms_or_error}, 404
     return rooms_or_error
+
+@bp.get("/<int:rid>")
+@bp.output(ReservationResponseSchema)
+def get_reservation_by_id(rid):
+    success, result = ReservationService.reservation_get_by_id(rid)
+    if not success:
+        raise HTTPError(404, result)
+    return result
