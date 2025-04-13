@@ -63,3 +63,11 @@ def get_reservation_by_id(rid):
     if not success:
         raise HTTPError(404, result)
     return result
+
+@bp.put('/cancel/<int:rid>')
+@bp.output(ReservationResponseSchema)
+def cancel_reservation(rid):
+    success, result = ReservationService.reservation_cancel(rid)
+    if not success:
+        raise HTTPError(400, result)
+    return result

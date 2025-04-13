@@ -10,16 +10,13 @@ from typing import List, Optional
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import String, Integer, Date
 from sqlalchemy import ForeignKey
+from sqlalchemy import Enum
 
 
-"""class StatusEnum(enum.Enum):
-    SingleRoom  = 0,
-    DoubleRoom  = 1,
-    Suites      = 2,
-    TwinRoom    = 3,
-    StandardRoom= 4, 
-    DeluxRoom   = 5""" 
-#Ez minek?
+class ReservationStatus(enum.Enum):
+    ACTIVE = "active"
+    CANCELLED = "cancelled"
+    COMPLETED = "completed"
 
 class Reservation(db.Model):  #nincs már benne az address id mert felesleges 
     __tablename__ = "reservations"
@@ -30,7 +27,7 @@ class Reservation(db.Model):  #nincs már benne az address id mert felesleges
     #items : Mapped[List["Rooms"]] = relationship(back_populates="Rooms", lazy=True)
     check_in: Mapped[Date] = mapped_column(Date())
     check_out: Mapped[Date] = mapped_column(Date())
-
+    status: Mapped[ReservationStatus] = mapped_column(Enum(ReservationStatus), default=ReservationStatus.ACTIVE, nullable=False)
     extraservices: Mapped[List["ExtraService"]] = relationship(back_populates="reservation")
     invoice: Mapped["Invoice"] = relationship(back_populates="reservation", uselist=False)
     reservation_rooms: Mapped[List["ReservationRoom"]] = relationship(

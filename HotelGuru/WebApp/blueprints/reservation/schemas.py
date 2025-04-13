@@ -38,6 +38,7 @@ class ReservationResponseSchema(Schema):
     user_id = fields.Integer()
     check_in = fields.Date()
     check_out = fields.Date()
+    status = fields.String()
     items = fields.Method("get_items")
 
     def get_items(self, obj):
@@ -45,8 +46,10 @@ class ReservationResponseSchema(Schema):
         room_ids = [rr.room_id for rr in obj.reservation_rooms]
         rooms = db.session.execute(select(Rooms).where(Rooms.id.in_(room_ids))).scalars().all()
         return RoomsListSchema(many=True).dump(rooms)
-
     
+
+
+        
 
 class ReservationRequestSchema(Schema):
     user_id = fields.Integer(required=True)

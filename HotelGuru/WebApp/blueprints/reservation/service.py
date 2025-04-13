@@ -1,6 +1,6 @@
-from WebApp.models.reservation import Reservation
+from WebApp.models.reservation import Reservation , ReservationStatus
 from WebApp.models.reservation_rooms import ReservationRoom
-from WebApp.models.rooms import Rooms
+from WebApp.models.rooms import Rooms ,RoomStatus
 from WebApp.extensions import db
 from WebApp.blueprints.reservation.schemas import ReservationResponseSchema, ReservationRequestSchema
 from WebApp.blueprints.rooms.schemas import RoomsListSchema
@@ -42,7 +42,8 @@ class ReservationService:
                     .filter(
                         ReservationRoom.room_id == room_id,
                         Reservation.check_out > check_in,
-                        Reservation.check_in < check_out
+                        Reservation.check_in < check_out,
+                        Reservation.status == ReservationStatus.ACTIVE
                     )
                 ).scalars().all()
 
@@ -127,4 +128,30 @@ class ReservationService:
             return False, "Reservation not found"
         reservation.items = ReservationService.get_rooms_for_reservation(reservation.id)
         return True, reservation
+    
+    @staticmethod
+    def reservation_cancel(rid):
+        try:
+            reservation = db.session.get(Reservation, rid)
+            if not reservation:
+                return False, "Reservation not found"
+
+            # Ellenőrizzük, hogy a foglalás még aktív-e
+            if reservation.status != ReservationStatus.ACTIVE:
+                return False, "Reservation is already cancelled or completed"
+
+            # Lemondás csak akkor, ha több mint 7 nap van a check-inig
+            difference = (reservation.check_in - datetime.today().date()).days
+            if difference < 7:
+                return False, "Cancellation only allowed at least 7 days before check-in"
+
+            reservation.status = ReservationStatus.CANCELLED
+
+            db.session.commit()
+            reservation.items = ReservationService.get_rooms_for_reservation(reservation.id)
+            return True, reservation
+
+        except Exception as ex:
+            db.session.rollback()
+            return False, str(ex)
 
