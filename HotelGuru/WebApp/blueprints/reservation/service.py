@@ -74,16 +74,14 @@ class ReservationService:
 
             difference = (reservation.check_in - datetime.today().date()).days
 
-            if difference < 0:
-                return False, 
-            if difference > 7:
-                return False,
+            if difference <= 7:
+                return False, "Reservation can only be modified 7 days in advance"
 
             reservation.check_in = request_data["check_in"]
             reservation.check_out = request_data["check_out"]
             db.session.commit()
             reservation.items = ReservationService.get_rooms_for_reservation(reservation.id)
-            return True, ReservationResponseSchema().dump(reservation)
+            return True, reservation
 
         except Exception as ex:
             db.session.rollback()

@@ -1,5 +1,5 @@
 from WebApp.blueprints.reservation import bp
-from WebApp.blueprints.reservation.schemas import  ReservationRequestSchema, ReservationResponseSchema,RoomsListSchema
+from WebApp.blueprints.reservation.schemas import  ReservationRequestSchema, ReservationResponseSchema,RoomsListSchema,ReservationUpdateSchema
 from WebApp.blueprints.reservation.service import ReservationService
 
 from apiflask import HTTPError
@@ -21,10 +21,10 @@ def add_reservation(json_data):
     return result
 
 @bp.put('/update/<int:rid>')
-@bp.input(ReservationRequestSchema)
+@bp.input(ReservationUpdateSchema)
 @bp.output(ReservationResponseSchema)
-def update_reservation(rid, data):
-    success, result = ReservationService.reservation_update(rid, data)
+def update_reservation(rid, json_data):
+    success, result = ReservationService.reservation_update(rid, json_data)
     if not success:
         raise HTTPError(400, result)
     return result

@@ -13,6 +13,10 @@ class BaseRoomSchema(Schema):   #ezzzel tudom megkapni a statusz enumot
 
     def get_type(self, obj):
         return obj.type.value
+    
+class ReservationUpdateSchema(Schema):
+    check_in = fields.Date(required=True)
+    check_out = fields.Date(required=True)
 
 class RoomsListSchema(BaseRoomSchema):
     id = fields.Integer()
