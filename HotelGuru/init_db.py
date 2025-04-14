@@ -22,3 +22,4 @@ from WebApp.models.reservation import Reservation
 from WebApp.models.invoice import Invoice
 from WebApp.models.rooms import Rooms
 from WebApp.models.extraservice import ExtraService
+from WebApp.models.reservation_rooms import ReservationRoom

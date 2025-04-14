@@ -1,6 +1,5 @@
 from WebApp.blueprints.extraservice.schemas import ExtraServiceListSchema, ExtraServiceResponseSchema
 from WebApp.extensions import db
-from WebApp.models.extraservice import ExtraService
 from sqlalchemy import select
 
 class ExtraService:

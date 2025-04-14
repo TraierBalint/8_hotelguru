@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: a702d17dd6b5
+Revision ID: 8c994b4a340e
 Revises: 
-Create Date: 2025-04-13 01:53:13.108119
+Create Date: 2025-04-14 19:55:14.241299
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'a702d17dd6b5'
+revision = '8c994b4a340e'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -39,12 +39,6 @@ def upgrade():
     sa.Column('name', sa.String(length=30), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('services',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
-    sa.Column('price', sa.Float(), nullable=False),
-    sa.PrimaryKeyConstraint('id')
-    )
     op.create_table('users',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=30), nullable=False),
@@ -60,6 +54,7 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('check_in', sa.Date(), nullable=False),
     sa.Column('check_out', sa.Date(), nullable=False),
+    sa.Column('status', sa.Enum('ACTIVE', 'CANCELLED', 'COMPLETED', name='reservationstatus'), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -71,11 +66,10 @@ def upgrade():
     )
     op.create_table('extraservices',
     sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=255), nullable=False),
+    sa.Column('price', sa.Float(), nullable=False),
     sa.Column('reservation_id', sa.Integer(), nullable=False),
-    sa.Column('service_id', sa.Integer(), nullable=False),
-    sa.Column('quantity', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['reservation_id'], ['reservations.id'], ),
-    sa.ForeignKeyConstraint(['service_id'], ['services.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('invoices',
@@ -106,7 +100,6 @@ def downgrade():
     op.drop_table('userroles')
     op.drop_table('reservations')
     op.drop_table('users')
-    op.drop_table('services')
     op.drop_table('roles')
     op.drop_table('addresses')
     op.drop_table('Rooms')

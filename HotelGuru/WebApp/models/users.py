@@ -24,9 +24,10 @@ class User(db.Model):
     address_id: Mapped[int] = mapped_column(ForeignKey("addresses.id"))
     address : Mapped["Address"] = relationship(back_populates="user", lazy=True)
     roles: Mapped[List["Role"]] = relationship(secondary=UserRole, back_populates="users")
+    reservations: Mapped[List["Reservation"]] = relationship(back_populates="user", lazy=True)
     
     
-    reservation: Mapped[List["Reservation"]] = relationship(back_populates="user", lazy=True)
+   
     
 
     def __repr__(self) -> str:

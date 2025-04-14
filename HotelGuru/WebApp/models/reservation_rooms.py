@@ -12,6 +12,6 @@ class ReservationRoom(db.Model):
     room_id: Mapped[int] = mapped_column(ForeignKey("Rooms.id",name="fk_reservationroom_room_id"))
 
     
-    reservation: Mapped["Reservation"] = relationship(back_populates="reservation_rooms")
+    reservations: Mapped["Reservation"] = relationship(back_populates="reservation_rooms")
     room: Mapped["Rooms"] = relationship(back_populates="reservation_rooms")
     

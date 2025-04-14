@@ -1,5 +1,4 @@
 from marshmallow import Schema, fields, validate
-from WebApp.models.extraservice import ExtraService
 from WebApp.blueprints.reservation.schemas import ReservationResponseSchema
 
 class ExtraServiceListSchema(Schema):

@@ -15,5 +15,5 @@ class Invoice(db.Model):
     issued_at: Mapped[Date] = mapped_column(Date(), nullable=False)  # Date of issue
     paid: Mapped[bool] = mapped_column( default=False)  # Payment status
 
-    reservation: Mapped["Reservation"] = relationship(back_populates="invoice")
+    reservations: Mapped["Reservation"] = relationship(back_populates="invoice")
     

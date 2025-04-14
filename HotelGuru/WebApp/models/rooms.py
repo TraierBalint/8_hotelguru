@@ -28,5 +28,5 @@ class Rooms(db.Model):
     type : Mapped[RoomType] = mapped_column(Enum(RoomType), nullable=False) # enumot nem tudom hogy kell
     price : Mapped[int]
     status: Mapped[RoomStatus] = mapped_column(Enum(RoomStatus), default=RoomStatus.AVAILABLE, nullable=False)  #így helyes
-    deleted : Mapped[int] = mapped_column(default = 0) # ez lehetséges hogy nem kell
+    #deleted : Mapped[int] = mapped_column(default = 0) # ez lehetséges hogy nem kell
     reservation_rooms: Mapped[List["ReservationRoom"]] = relationship(back_populates="room")
