@@ -19,11 +19,8 @@ bp.register_blueprint(bp_reservation, url_prefix='/reservation')
 
 from WebApp.blueprints.extraservice import bp as bp_extraservice
 bp.register_blueprint(bp_extraservice, url_prefix='/extraservice')
-"""
-from app.blueprints.chef import bp as bp_chef
-bp.register_blueprint(bp_chef, url_prefix='/chef')
 
-from app.blueprints.courier import bp as bp_courier
-bp.register_blueprint(bp_courier, url_prefix='/courier')
+from WebApp.blueprints.invoice import bp as bp_invoice
+bp.register_blueprint(bp_invoice, url_prefix='/invoice')
 
-from app.models import *"""
+

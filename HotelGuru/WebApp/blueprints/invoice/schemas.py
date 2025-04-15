@@ -3,7 +3,7 @@ from marshmallow import Schema, fields
 class InvoiceRequestSchema(Schema):
     reservation_id = fields.Integer(required=True)
     issue_date = fields.Date(required=True)
-    total_amount = fields.Float(required=True)
+
 
 class InvoiceResponseSchema(Schema):
     id = fields.Integer()
