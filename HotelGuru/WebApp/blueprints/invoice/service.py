@@ -45,4 +45,26 @@ class InvoiceService:
         if not invoice:
             return False, "Invoice not found."
         return True, InvoiceResponseSchema().dump(invoice)    
+    
+    @staticmethod
+    def list_all():
+        invoices = db.session.execute(select(Invoice)).scalars().all()
+        return True, InvoiceResponseSchema(many=True).dump(invoices)
+    
+    @staticmethod
+    def update(invoice_id, data):
+        invoice = db.session.get(Invoice, invoice_id)
+        if not invoice:
+            return False, "Invoice not found."
+
+        try:
+            for key, value in data.items():
+                if key == "issued_at" and isinstance(value, str):
+                    value = datetime.fromisoformat(value).date()
+
+                setattr(invoice, key, value)
+            db.session.commit()
+        except Exception as ex:
+            return False, str(ex)
+        return True, invoice
 

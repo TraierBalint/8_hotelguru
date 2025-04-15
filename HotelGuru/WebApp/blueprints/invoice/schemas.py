@@ -10,3 +10,7 @@ class InvoiceResponseSchema(Schema):
     reservation_id = fields.Integer()
     issue_date = fields.Date()
     total_amount = fields.Float()
+
+class InvoiceUpdateSchema(Schema):
+    total_amount = fields.Float()
+    issue_date = fields.Date()
