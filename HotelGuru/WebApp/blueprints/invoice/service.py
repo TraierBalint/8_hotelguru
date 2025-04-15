@@ -68,3 +68,16 @@ class InvoiceService:
             return False, str(ex)
         return True, invoice
 
+    @staticmethod
+    def delete(invoice_id):
+        invoice = db.session.get(Invoice, invoice_id)
+        if not invoice:
+            return False, "Invoice not found."
+
+        try:
+            db.session.delete(invoice)
+            db.session.commit()
+        except Exception as ex:
+            return False, str(ex)
+
+        return True, "Invoice deleted successfully."

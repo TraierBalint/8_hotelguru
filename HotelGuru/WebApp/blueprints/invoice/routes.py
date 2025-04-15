@@ -37,12 +37,20 @@ def list_invoices():
         return response, 200
     raise HTTPError(message=response, status_code=400)
 
-@bp.put('/<int:invoice_id>')
+@bp.put('/update/<int:invoice_id>')
 @bp.doc(tags=["invoice"])
 @bp.input(InvoiceUpdateSchema, location="json")
 @bp.output(InvoiceResponseSchema)
 def update_invoice(invoice_id, json_data):
     success, response = InvoiceService.update(invoice_id, json_data)
+    if success:
+        return response, 200
+    raise HTTPError(message=response, status_code=400)
+
+@bp.delete("/delete/<int:invoice_id>")
+@bp.doc(summary="Delete invoice", description="Deletes an invoice by ID", tags=["invoice"])
+def delete_invoice(invoice_id):
+    success, response = InvoiceService.delete(invoice_id)
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
