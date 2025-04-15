@@ -38,4 +38,11 @@ class InvoiceService:
         
         except Exception as ex:
             return False, str(ex)
+        
+    @staticmethod
+    def get_by_id(invoice_id):
+        invoice = db.session.get(Invoice, invoice_id)
+        if not invoice:
+            return False, "Invoice not found."
+        return True, InvoiceResponseSchema().dump(invoice)    
 

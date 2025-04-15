@@ -17,3 +17,13 @@ def create_invoice(json_data):
     if success:
         return response, 201
     raise HTTPError(message=response, status_code=400)
+
+
+@bp.get("/<int:invoice_id>")
+@bp.doc(tags=["invoice"])
+@bp.output(InvoiceResponseSchema)
+def get_invoice(invoice_id):
+    success, response = InvoiceService.get_by_id(invoice_id)
+    if success:
+        return response, 200
+    raise HTTPError(message=response, status_code=404)
