@@ -3,10 +3,10 @@ from WebApp.models.invoice import Invoice
 from WebApp.blueprints.invoice.schemas import InvoiceRequestSchema, InvoiceResponseSchema
 from sqlalchemy import select
 from WebApp.models.reservation import Reservation
+from WebApp.models.invoceItem  import InvoiceItem
 from WebApp.models.reservation_rooms import ReservationRoom
 from WebApp.models.extraservice import ExtraService
 from datetime import datetime
-
 class InvoiceService:
 
     @staticmethod
@@ -17,26 +17,61 @@ class InvoiceService:
 
         try:
             total_price = 0
+            invoice_items = []
 
-            # Hozzáadjuk a szobák árait
+            # Szobák hozzáadása
             for rr in reservation.reservation_rooms:
-                total_price += rr.room.price
+                room = rr.room
+                total_price += room.price
 
-            # Hozzáadjuk az extra szolgáltatások árait
+                invoice_items.append(InvoiceItem(
+                    item_type="room",
+                    item_id=room.id,
+                    name=room.name,
+                    price=room.price,
+                    quantity=1
+                ))
+
+            # Extra szolgáltatások hozzáadása
             for es in reservation.extraservices:
                 total_price += es.price
 
-            invoice = Invoice(
+                invoice_items.append(InvoiceItem(
+                    item_type="extra_service",
+                    item_id=es.id,
+                    name=es.name,
+                    price=es.price,
+                    quantity=1
+                ))
+
+            """# Hozzáadjuk a szobák árait
+            for rr in reservation.reservation_rooms:
+                total_price += rr.room.price"""
+
+            """# Hozzáadjuk az extra szolgáltatások árait
+            for es in reservation.extraservices:
+                total_price += es.price"""
+
+            """invoice = Invoice(
                 reservation_id=reservation.id,
                 total_amount=total_price,
                 issued_at=datetime.now()
-            )
+            )"""
+
+            # Számla létrehozása
+            invoice = Invoice(
+            reservation_id=reservation.id,
+            total_amount=total_price,
+            issued_at=datetime.now(),
+            items=invoice_items
+        )
 
             db.session.add(invoice)
             db.session.commit()
             return True, InvoiceResponseSchema().dump(invoice)
         
         except Exception as ex:
+            db.session.rollback()
             return False, str(ex)
         
     @staticmethod

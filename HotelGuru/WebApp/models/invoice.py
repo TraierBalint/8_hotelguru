@@ -16,4 +16,4 @@ class Invoice(db.Model):
     paid: Mapped[bool] = mapped_column( default=False)  # Payment status
 
     reservations: Mapped["Reservation"] = relationship(back_populates="invoice")
-    
+    items: Mapped[List["InvoiceItem"]] = relationship(back_populates="invoice", cascade="all, delete-orphan")
