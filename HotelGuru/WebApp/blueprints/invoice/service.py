@@ -18,46 +18,45 @@ class InvoiceService:
         try:
             total_price = 0
             invoice_items = []
+            item_map = {}
 
             # Szobák hozzáadása
             for rr in reservation.reservation_rooms:
                 room = rr.room
                 total_price += room.price
 
-                invoice_items.append(InvoiceItem(
-                    item_type="room",
-                    item_id=room.id,
-                    name=room.name,
-                    price=room.price,
-                    quantity=1
-                ))
+                key = ("room", room.name)
+                if key in item_map:
+                    item_map[key].quantity += 1
+                else:
+                    item = InvoiceItem(
+                        item_type="room",
+                        item_id=room.id,
+                        name=room.name,
+                        price=room.price,
+                        quantity=1
+                    )
+                    item_map[key] = item
+                    invoice_items.append(item)
 
             # Extra szolgáltatások hozzáadása
             for es in reservation.extraservices:
                 total_price += es.price
 
-                invoice_items.append(InvoiceItem(
-                    item_type="extra_service",
-                    item_id=es.id,
-                    name=es.name,
-                    price=es.price,
-                    quantity=1
-                ))
-
-            """# Hozzáadjuk a szobák árait
-            for rr in reservation.reservation_rooms:
-                total_price += rr.room.price"""
-
-            """# Hozzáadjuk az extra szolgáltatások árait
-            for es in reservation.extraservices:
-                total_price += es.price"""
-
-            """invoice = Invoice(
-                reservation_id=reservation.id,
-                total_amount=total_price,
-                issued_at=datetime.now()
-            )"""
-
+                key = ("extra_service", es.name)
+                if key in item_map:
+                    item_map[key].quantity += 1
+                else:
+                    item = InvoiceItem(
+                        item_type="extra_service",
+                        item_id=es.id,
+                        name=es.name,
+                        price=es.price,
+                        quantity=1
+                    )
+                    item_map[key] = item
+                    invoice_items.append(item)
+                    
             # Számla létrehozása
             invoice = Invoice(
             reservation_id=reservation.id,
