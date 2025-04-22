@@ -1,6 +1,6 @@
 from WebApp.extensions import db
 from WebApp.models.extraservice import ExtraService
-from WebApp.blueprints.extraservice.schemas import ExtraServiceResponseSchema, ExtraServiceRequestSchema
+from WebApp.blueprints.extraservice.schemas import ExtraServiceResponseSchema, ExtraServiceRequestSchema, ExtraServiceListResponseSchema
 from sqlalchemy import select
 
 class ExtraServiceService:
@@ -8,14 +8,14 @@ class ExtraServiceService:
     @staticmethod
     def get_all():
         services = db.session.execute(select(ExtraService)).scalars().all()
-        return True, ExtraServiceResponseSchema().dump(services, many=True)
+        return True, ExtraServiceListResponseSchema().dump(services, many=True)
 
     @staticmethod
     def get_by_id(service_id):
         service = db.session.get(ExtraService, service_id)
         if not service:
             return False, "Extra service not found."
-        return True, ExtraServiceResponseSchema().dump(service)
+        return True, ExtraServiceListResponseSchema().dump(service)
 
     @staticmethod
     def create(data):

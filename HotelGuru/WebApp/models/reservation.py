@@ -28,7 +28,7 @@ class Reservation(db.Model):  #nincs már benne az address id mert felesleges
     check_in: Mapped[Date] = mapped_column(Date())
     check_out: Mapped[Date] = mapped_column(Date())
     status: Mapped[ReservationStatus] = mapped_column(Enum(ReservationStatus), default=ReservationStatus.ACTIVE, nullable=False)
-    extraservices: Mapped[List["ExtraService"]] = relationship(back_populates="reservations")
+    #extraservices: Mapped[List["ExtraService"]] = relationship(back_populates="reservations")
     invoice: Mapped["Invoice"] = relationship(back_populates="reservations", uselist=False)
     reservation_rooms: Mapped[List["ReservationRoom"]] = relationship(
     back_populates="reservations",
