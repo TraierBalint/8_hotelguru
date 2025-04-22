@@ -20,5 +20,6 @@ class InvoiceResponseSchema(Schema):
     items = fields.List(fields.Nested(InvoiceItemSchema))
 
 class InvoiceUpdateSchema(Schema):
-    total_amount = fields.Float()
-    issue_date = fields.Date()
+    issued_at = fields.Date(required=False)
+    items = fields.List(fields.Nested(InvoiceItemSchema), required=False)
+

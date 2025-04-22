@@ -27,6 +27,7 @@ class InvoiceService:
 
                 key = ("room", room.name)
                 if key in item_map:
+                    #Mikor dict frissül akkor a list is frissül, mert a memóriába mindkettő ugyanoda mutat
                     item_map[key].quantity += 1
                 else:
                     item = InvoiceItem(
@@ -56,7 +57,7 @@ class InvoiceService:
                     )
                     item_map[key] = item
                     invoice_items.append(item)
-                    
+
             # Számla létrehozása
             invoice = Invoice(
             reservation_id=reservation.id,
@@ -85,6 +86,10 @@ class InvoiceService:
         invoices = db.session.execute(select(Invoice)).scalars().all()
         return True, InvoiceResponseSchema(many=True).dump(invoices)
     
+    
+    #1. módosítani lehet a kiállítási dátumot manuálisan
+    #2. lesz majd egy lista az itemekről ott még fel tudunk venni újat illetve a mennyiségét tudjuk módosítani és akár eltávolítani a számlából
+    #3. a végösszeg újra számolódik 
     @staticmethod
     def update(invoice_id, data):
         invoice = db.session.get(Invoice, invoice_id)
@@ -92,15 +97,35 @@ class InvoiceService:
             return False, "Invoice not found."
 
         try:
-            for key, value in data.items():
-                if key == "issued_at" and isinstance(value, str):
-                    value = datetime.fromisoformat(value).date()
+            # Dátum frissítése, ha jön
+            if "issued_at" in data and isinstance(data["issued_at"], str):
+                invoice.issued_at = datetime.fromisoformat(data["issued_at"])
 
-                setattr(invoice, key, value)
+            # Tételek frissítése
+            if "items" in data:
+                invoice.items.clear()
+                total_price = 0
+
+                for item_data in data["items"]:
+                    item = InvoiceItem(
+                        item_type=item_data["item_type"],
+                        item_id=item_data["item_id"],
+                        name=item_data["name"],
+                        price=item_data["price"],
+                        quantity=item_data["quantity"]
+                    )
+                    total_price += item.price * item.quantity
+                    invoice.items.append(item)
+
+                invoice.total_amount = total_price
+
             db.session.commit()
+            return True, InvoiceResponseSchema().dump(invoice)
+
         except Exception as ex:
+            db.session.rollback()
             return False, str(ex)
-        return True, invoice
+
 
     @staticmethod
     def delete(invoice_id):
