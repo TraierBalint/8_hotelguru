@@ -1,10 +1,14 @@
 from WebApp.extensions import db
-from WebApp.blueprints.user.schemas import UserResponseSchema, RoleSchema
+from WebApp.blueprints.user.schemas import UserResponseSchema, RoleSchema, PayloadSchema
 from WebApp.models.users import User
 from WebApp.models.address import Address
 from WebApp.models.role import Role
 
 from sqlalchemy import select
+
+from datetime import datetime,timedelta
+from authlib.jose import jwt
+from flask import current_app
 
 class UserService:
     
@@ -32,9 +36,28 @@ class UserService:
            user = db.session.execute(select(User).filter_by(email=request["email"])).scalar_one()
            if not user.check_password(request["password"]):
             return False, "Incorrect e-mail or password!"
+           user_schema=UserResponseSchema().dump(user)
+           user_schema["token"]=UserService.token_generate(user)
+           return True, user_schema
         except Exception as ex:
-            return False, "Incorrect Login data!"
-        return True, UserResponseSchema().dump(user)
+            return False, ex
+        
+    
+    @staticmethod
+    def token_generate(user:User):
+        payload=PayloadSchema()
+        payload.exp=int((datetime.now()+timedelta(days=1)).timestamp())
+        payload.roles=RoleSchema().dump(user.roles, many=True)
+        payload.user_id=user.id
+        return jwt.encode({"alg": "HS256"},
+                          PayloadSchema().dump(payload),
+                          current_app.config["SECRET_KEY"]).decode()
+        
+    
+    
+    
+    
+    
     
     @staticmethod
     def user_list_roles():
