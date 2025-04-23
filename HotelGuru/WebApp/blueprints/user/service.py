@@ -3,11 +3,13 @@ from WebApp.blueprints.user.schemas import UserResponseSchema, RoleSchema, Paylo
 from WebApp.models.users import User
 from WebApp.models.address import Address
 from WebApp.models.role import Role
+from jose import jwt
+import inspect
 
 from sqlalchemy import select
 
 from datetime import datetime,timedelta
-from authlib.jose import jwt
+
 from flask import current_app
 
 class UserService:
@@ -40,18 +42,26 @@ class UserService:
            user_schema["token"]=UserService.token_generate(user)
            return True, user_schema
         except Exception as ex:
-            return False, ex
+            return False, str(ex)
         
     
+
     @staticmethod
-    def token_generate(user:User):
-        payload=PayloadSchema()
-        payload.exp=int((datetime.now()+timedelta(days=1)).timestamp())
-        payload.roles=RoleSchema().dump(user.roles, many=True)
-        payload.user_id=user.id
-        return jwt.encode({"alg": "HS256"},
-                          PayloadSchema().dump(payload),
-                          current_app.config["SECRET_KEY"]).decode()
+    def token_generate(user: User):
+        
+        print(jwt, inspect.getfile(jwt))
+        payload = {
+            "user_id": user.id,
+            "roles": RoleSchema().dump(user.roles, many=True),
+            "exp": int((datetime.now() + timedelta(days=1)).timestamp())
+        }
+
+        return jwt.encode(
+        payload,
+        current_app.config["SECRET_KEY"],  # ez legyen a PEM kulcs szövege!
+        algorithm="RS256"  # IGEN, de CSAK így fogadja el!
+    )
+
         
     
     
