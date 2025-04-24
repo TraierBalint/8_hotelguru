@@ -47,12 +47,12 @@ def user_list_roles():
     raise HTTPError(message=response, status_code=400)
 
 
-@bp.get('/roles/<int:uid>')
+@bp.get('/myroles')#itt ebben sokat changeltem (pl a nevét myroles-ra roles/<int:uid>)
 @bp.doc(tags=["user"])
 @bp.output(RoleSchema(many=True))
 @bp.auth_required(auth)
-def user_list_user_roles(uid):
-    success, response = UserService.list_user_roles(uid)
+def user_list_user_roles():#már nem vár uid-t
+    success, response = UserService.list_user_roles(auth.current_user.get("user_id"))#innen kivettem az uid-t és lecseréltem erre
     if success:
         return response, 200
     raise HTTPError(message=response, status_code=400)
