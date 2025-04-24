@@ -5,6 +5,7 @@ from WebApp.blueprints.user.service import UserService
 from apiflask import HTTPError
 from apiflask.fields import String, Email, Nested, Integer, List
 from WebApp.extensions import auth
+from WebApp.blueprints import role_required
 
 @bp.route('/')
 def index():
@@ -40,6 +41,9 @@ def user_login(json_data):
 @bp.doc(tags=["user"])
 @bp.output(RoleSchema(many=True))
 @bp.auth_required(auth)
+
+@role_required(["Admin"])#csak példának  de ha ezt a függvényt hívod meg azzal döntöd el melyik role fér a végponthoz
+
 def user_list_roles():
     success, response = UserService.user_list_roles()
     if success:
@@ -51,6 +55,9 @@ def user_list_roles():
 @bp.doc(tags=["user"])
 @bp.output(RoleSchema(many=True))
 @bp.auth_required(auth)
+
+@role_required(["User"])#csak példának de ha ezt a függvényt hívod meg azzal döntöd el melyik role fér a végponthoz
+
 def user_list_user_roles():#már nem vár uid-t
     success, response = UserService.list_user_roles(auth.current_user.get("user_id"))#innen kivettem az uid-t és lecseréltem erre
     if success:

@@ -1,5 +1,7 @@
 #from flask import Blueprint
+from apiflask import HTTPError
 from apiflask import APIBlueprint
+from functools import wraps
 
 bp = APIBlueprint('main', __name__, tag="default")
 
@@ -25,6 +27,19 @@ def verify_token(token):
     except:
         return None
     
+def role_required(roles):#dekorátor és ezzel a függvényel tudsz végpontokat elérhetőve tenni az adott rolenak, ezt  routes.pyban hívod meg(lásd pl user routes.py roles vagy myroles)
+    def wrapper(fn):
+        @wraps(fn)
+        def decorated_function(*args,**kwargs):
+            user_roles=[item["name"] for item in auth.current_user.get("roles")]
+            for role in roles:
+                if role in user_roles:
+                    return fn(*args,**kwargs)
+            raise HTTPError(message="Access denied",status_code=403)
+        return decorated_function
+    return wrapper
+
+    
 
 from WebApp.blueprints.user import bp as bp_user
 bp.register_blueprint(bp_user, url_prefix='/user')
@@ -41,5 +56,6 @@ bp.register_blueprint(bp_extraservice, url_prefix='/extraservice')
 
 from WebApp.blueprints.invoice import bp as bp_invoice
 bp.register_blueprint(bp_invoice, url_prefix='/invoice')
+
 
 
