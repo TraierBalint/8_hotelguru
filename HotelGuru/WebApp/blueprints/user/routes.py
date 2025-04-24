@@ -4,6 +4,7 @@ from WebApp.blueprints.user.schemas import UserResponseSchema, UserRequestSchema
 from WebApp.blueprints.user.service import UserService
 from apiflask import HTTPError
 from apiflask.fields import String, Email, Nested, Integer, List
+from WebApp.extensions import auth
 
 @bp.route('/')
 def index():
@@ -38,6 +39,7 @@ def user_login(json_data):
 @bp.get('/roles')
 @bp.doc(tags=["user"])
 @bp.output(RoleSchema(many=True))
+@bp.auth_required(auth)
 def user_list_roles():
     success, response = UserService.user_list_roles()
     if success:
@@ -48,6 +50,7 @@ def user_list_roles():
 @bp.get('/roles/<int:uid>')
 @bp.doc(tags=["user"])
 @bp.output(RoleSchema(many=True))
+@bp.auth_required(auth)
 def user_list_user_roles(uid):
     success, response = UserService.list_user_roles(uid)
     if success:

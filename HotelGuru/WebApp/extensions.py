@@ -16,3 +16,10 @@ convention = {
 metadata = MetaData(naming_convention=convention)
 
 db = SQLAlchemy(model_class=Base, metadata=metadata)
+
+from apiflask import HTTPTokenAuth
+
+
+auth = HTTPTokenAuth()
+
+

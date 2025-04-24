@@ -7,6 +7,25 @@ bp = APIBlueprint('main', __name__, tag="default")
 def index():
     return 'This is The Main Blueprint'
 
+from WebApp.extensions import auth
+from flask import current_app
+from authlib.jose import jwt
+from datetime import datetime
+
+@auth.verify_token
+def verify_token(token):
+    try:
+        if not token:
+            return None
+        public_key=current_app.config["SECRET_KEY"]
+        data=jwt.decode(token.encode(),public_key)
+        if data["exp"]< int(datetime.now().timestamp()):
+            return None
+        return data
+    except:
+        return None
+    
+
 from WebApp.blueprints.user import bp as bp_user
 bp.register_blueprint(bp_user, url_prefix='/user')
 

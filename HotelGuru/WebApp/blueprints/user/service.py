@@ -53,13 +53,6 @@ class UserService:
         return jwt.encode({"alg": "RS256"},
                           PayloadSchema().dump(payload),
                           private_key).decode()
-
-        
-    
-    
-    
-    
-    
     
     @staticmethod
     def user_list_roles():
