@@ -41,8 +41,7 @@ def user_login(json_data):
 @bp.doc(tags=["user"])
 @bp.output(RoleSchema(many=True))
 @bp.auth_required(auth)
-
-@role_required(["Admin"])#csak példának  de ha ezt a függvényt hívod meg azzal döntöd el melyik role fér a végponthoz
+@role_required(["Administrator"])#csak példának  de ha ezt a függvényt hívod meg azzal döntöd el melyik role fér a végponthoz
 
 def user_list_roles():
     success, response = UserService.user_list_roles()
@@ -55,9 +54,7 @@ def user_list_roles():
 @bp.doc(tags=["user"])
 @bp.output(RoleSchema(many=True))
 @bp.auth_required(auth)
-
-@role_required(["User"])#csak példának de ha ezt a függvényt hívod meg azzal döntöd el melyik role fér a végponthoz
-
+@role_required(["User","Administrator","Receptionist"])
 def user_list_user_roles():#már nem vár uid-t
     success, response = UserService.list_user_roles(auth.current_user.get("user_id"))#innen kivettem az uid-t és lecseréltem erre
     if success:
@@ -68,6 +65,8 @@ def user_list_user_roles():#már nem vár uid-t
 @bp.post('/address/update')
 @bp.doc(tags=["user"])
 @bp.input(AddAddressSchema, location="json")
+@bp.auth_required(auth)
+@role_required(["User","Administrator"])
 def user_address_update(json_data):
     success, response = UserService.user_update_address(json_data)
     if success:
@@ -76,6 +75,8 @@ def user_address_update(json_data):
 
 
 @bp.delete('/delete/<int:uid>') # User törlés uid alapján
+@bp.auth_required(auth)
+@role_required(["User"])#a kérdés hogy ezt csak a user törölheti-e vagy törölhesse az admin is?
 def user_delete(uid):
     success, response = UserService.user_delete(uid)
     if success:
@@ -85,6 +86,8 @@ def user_delete(uid):
 
 @bp.get('/list')  # Ki listázas az összes usert, amelyik usert nem töröltünk ki
 @bp.output(UserResponseSchema(many = True))
+@bp.auth_required(auth)
+@role_required(["Administrator"])
 def user_list_all():
     success, response = UserService.user_list_all()
     if success:

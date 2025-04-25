@@ -12,8 +12,6 @@ def index():
 
 @bp.get('/list')  # Ki listázas az összes szobát, amelyik szobát nem töröltünk ki
 @bp.output(RoomsListSchema(many = True))
-@bp.auth_required(auth)
-@role_required(["User"])
 def rooms_list_all():
     success, response = RoomsService.rooms_list_all()
     if success:
@@ -21,6 +19,8 @@ def rooms_list_all():
     raise HTTPError(message=response, status_code=400)
 
 @bp.delete('/delete/<int:rid>') # Szoba törlés rid alapján
+@bp.auth_required(auth)
+@role_required(["Administrator"])
 def room_delete(rid):
     success, response = RoomsService.room_delete(rid)
     if success:
@@ -28,9 +28,10 @@ def room_delete(rid):
     raise HTTPError(message=response, status_code=400)
 
 @bp.post('/add')  # Szoba hozzáadás
-
 @bp.input(RoomsRequestSchema, location="json")
 @bp.output(RoomsResponseSchema)
+@bp.auth_required(auth)
+@role_required(["Administrator","Receptionist"])
 def room_add_new(json_data):
     success, response = RoomsService.room_add(json_data)
     if success:
@@ -40,6 +41,8 @@ def room_add_new(json_data):
 @bp.put('/update/<int:rid>') # Szoba frisítése id alapján
 @bp.input(RoomsRequestSchema, location="json")
 @bp.output(RoomsResponseSchema)
+@bp.auth_required(auth)
+@role_required(["Administrator","Receptionist"])
 def room_update(rid, json_data):
     success, response = RoomsService.room_update(rid, json_data)
     if success:

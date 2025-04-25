@@ -18,11 +18,15 @@ def create_app(config_class=Config):
     from flask_migrate import Migrate
     migrate = Migrate(app, db, render_as_batch=True)
 
-    
     @app.get("/")
     def home():
         return {"message": "HotelGuru API is running"}
+    
+    from WebApp.blueprints import bp as bp_default
+    app.register_blueprint(bp_default, url_prefix='/api')
 
+    return app
+"""
     # Blueprintek regisztrálása
     from WebApp.blueprints.user import bp as user_bp
     app.register_blueprint(user_bp, url_prefix="/api/user")
@@ -40,13 +44,7 @@ def create_app(config_class=Config):
     app.register_blueprint(invoice_bp, url_prefix="/api/invoice")
 
     return app
-
-    
-    
-
-   
-
-"""
+""" """
 from flask import Flask
 from config import db_config
 from urllib.parse import quote_plus
