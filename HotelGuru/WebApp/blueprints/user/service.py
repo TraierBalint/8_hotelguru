@@ -57,8 +57,7 @@ class UserService:
     @staticmethod
     def user_list_roles():
         roles = db.session.query(Role).all()
-        return True, RoleSchema().dump(obj=roles, many=True)#nem tudom nekünk kell-e mert nincs Role adatmodellünk, 
-    #és a User.role az a NetPincér Role helyett van
+        return True, RoleSchema().dump(obj=roles, many=True)
     
     @staticmethod
     def list_user_roles(uid):

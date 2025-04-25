@@ -2,7 +2,8 @@ from WebApp.blueprints.rooms import bp
 from WebApp.blueprints.rooms.schemas import RoomsListSchema , RoomsRequestSchema, RoomsResponseSchema
 from WebApp.blueprints.rooms.service import RoomsService
 from apiflask.fields import String, Integer
-
+from WebApp.blueprints import role_required
+from WebApp.extensions import auth
 from apiflask import HTTPError
 
 @bp.route('/')
@@ -11,6 +12,8 @@ def index():
 
 @bp.get('/list')  # Ki listázas az összes szobát, amelyik szobát nem töröltünk ki
 @bp.output(RoomsListSchema(many = True))
+@bp.auth_required(auth)
+@role_required(["User"])
 def rooms_list_all():
     success, response = RoomsService.rooms_list_all()
     if success:
