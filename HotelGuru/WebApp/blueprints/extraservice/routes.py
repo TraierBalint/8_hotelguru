@@ -3,6 +3,8 @@ from WebApp.blueprints.extraservice import bp
 from WebApp.blueprints.extraservice.schemas import ExtraServiceRequestSchema, ExtraServiceResponseSchema
 from WebApp.blueprints.extraservice.service import ExtraServiceService
 from apiflask import HTTPError
+from WebApp.extensions import auth
+from WebApp.blueprints import role_required
 
 
 @bp.route('/')
@@ -34,6 +36,8 @@ def get_service(service_id):
 @bp.doc(tags=["extraservice"])
 @bp.input(ExtraServiceRequestSchema, location="json")
 @bp.output(ExtraServiceResponseSchema)
+@bp.auth_required(auth)
+@role_required(["Administrator","Receptionist"])
 def create_service(json_data):
     success, response = ExtraServiceService.create(json_data)
     if success:
@@ -45,6 +49,8 @@ def create_service(json_data):
 @bp.doc(tags=["extraservice"])
 @bp.input(ExtraServiceRequestSchema, location="json")
 @bp.output(ExtraServiceResponseSchema)
+@bp.auth_required(auth)
+@role_required(["Administrator","Receptionist"])
 def update_service(service_id, json_data):
     success, response = ExtraServiceService.update(service_id, json_data)
     if success:
@@ -54,6 +60,8 @@ def update_service(service_id, json_data):
 
 @bp.delete('/delete/<int:service_id>')
 @bp.doc(tags=["extraservice"])
+@bp.auth_required(auth)
+@role_required(["Administrator","Receptionist"])
 def delete_service(service_id):
     success, response = ExtraServiceService.delete(service_id)
     if success:
