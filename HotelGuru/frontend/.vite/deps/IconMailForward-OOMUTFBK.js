@@ -1,0 +1,9 @@
+import {
+  IconMailForward
+} from "./chunk-CITVJDSV.js";
+import "./chunk-AW2HVWNW.js";
+import "./chunk-HBSDMR7K.js";
+import "./chunk-DC5AMYBS.js";
+export {
+  IconMailForward as default
+};

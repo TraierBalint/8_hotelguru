@@ -1,0 +1,9 @@
+import {
+  IconFileTextSpark
+} from "./chunk-HSA52WDR.js";
+import "./chunk-AW2HVWNW.js";
+import "./chunk-HBSDMR7K.js";
+import "./chunk-DC5AMYBS.js";
+export {
+  IconFileTextSpark as default
+};

@@ -1,0 +1,9 @@
+import {
+  IconLanguage
+} from "./chunk-EWGY7LND.js";
+import "./chunk-AW2HVWNW.js";
+import "./chunk-HBSDMR7K.js";
+import "./chunk-DC5AMYBS.js";
+export {
+  IconLanguage as default
+};
