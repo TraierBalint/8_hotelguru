@@ -4,3 +4,7 @@
  - `npm i -g yarn`
  - `yarn`
  - `vite`
+
+
+**Run App**
+- `yarn dev`
