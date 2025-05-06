@@ -8,3 +8,7 @@
 
 **Run App**
 - `yarn dev`
+
+**Run Error because Yarn Version**
+- `enable corepack`
+- `corepack prepare yarn@4.4.1 --activate`
