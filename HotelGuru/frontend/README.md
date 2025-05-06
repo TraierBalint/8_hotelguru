@@ -10,5 +10,9 @@
 - `yarn dev`
 
 **Run Error because Yarn Version**
-- `enable corepack`
+- `corepack enable`
 - `corepack prepare yarn@4.4.1 --activate`
+
+**Axios Download**
+- `npm install axios`
+- `npm install --save-dev @types/axios`

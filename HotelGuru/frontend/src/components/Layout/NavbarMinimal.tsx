@@ -48,6 +48,16 @@ export function NavbarMinimal({toggle}: any) {
             icon: IconHome,
             label: "Kezdőlap",
             url: "dashboard",
+        },
+        {
+            icon: IconHome,
+            label: "Szobák",
+            url: "rooms",
+        },
+        {
+            icon: IconHome,
+            label: "Extra szolgáltatások",
+            url: "extra-services",
         }
     ];
 
