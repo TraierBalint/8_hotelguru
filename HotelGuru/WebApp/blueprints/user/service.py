@@ -25,7 +25,9 @@ class UserService:
             db.session.commit()
         except Exception as ex:
             return False, str(ex)#"Incorrect User data!"
-        return True, UserResponseSchema().dump(user)
+        user_schema=UserResponseSchema().dump(user)
+        user_schema["token"]=UserService.token_generate(user)
+        return True, user_schema
     
     @staticmethod
     def user_login(request):

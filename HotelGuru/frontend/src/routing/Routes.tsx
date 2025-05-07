@@ -1,5 +1,5 @@
 import Login from "../pages/Login.tsx";
-import ForgotPassword from "../pages/ForgotPassword.tsx";
+import Registrate from "../pages/Registrate.tsx";
 import Dashboard from "../pages/Dashboard.tsx";
 import Rooms from "../pages/Rooms.tsx";
 export const routes = [
@@ -9,8 +9,8 @@ export const routes = [
         isPrivate: false
     },
     {
-        path: "forgot",
-        component: <ForgotPassword/>,
+        path: "registrate",
+        component: <Registrate/>,
         isPrivate: false
     },
     {

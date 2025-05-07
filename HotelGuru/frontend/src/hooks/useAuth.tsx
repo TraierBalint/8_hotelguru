@@ -19,6 +19,18 @@ const useAuth = () => {
         });
     }
 
+    const regist = (email: string, password: string, name: string, phone: string) => {
+        console.log({email, name});
+        api.Reg.registrate(name, email, password, phone).then((res) => {
+            const token = res.data.token;
+            setToken(token);
+            localStorage.setItem(tokenKeyName, token);
+            const email = res.data.email;
+            setEmail(email);
+            localStorage.setItem(emailKeyName, email);
+        });
+    }
+
     const logout = () => {
         localStorage.clear();
         setToken(null);
@@ -28,7 +40,7 @@ const useAuth = () => {
 
     }, []);
 
-    return {login, logout, token, email, isLoggedIn};
+    return {login, logout, regist, token, email, isLoggedIn};
 }
 
 export default useAuth;
