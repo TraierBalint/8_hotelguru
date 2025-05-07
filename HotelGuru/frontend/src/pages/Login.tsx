@@ -4,10 +4,13 @@ import {
     PasswordInput,
     Group,
     Button,
-    Anchor, Divider
+    Anchor,
+    Divider,
+    Center,
+    Text
 } from "@mantine/core";
 import {useForm} from "@mantine/form";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom"; // <== Link hozzáadva
 import AuthContainer from "../components/AuthContainer.tsx";
 import useAuth from "../hooks/useAuth.tsx";
 
@@ -26,7 +29,6 @@ const Login = () => {
             password: (val: string) => (val.length <= 6 ? 'A jelszónak 6 karakter hosszúnak kell lennie.' : null),
         },
     });
-
 
     const submit = () => {
         login(form.values.email, form.values.password)
@@ -56,15 +58,24 @@ const Login = () => {
                 </Stack>
 
                 <Group justify="space-between" mt="xl">
-                    <Anchor component="button" type="button" c="dimmed" onClick={() => navigate('/forgot')}
-                            size="xs">
+                    <Anchor component="button" type="button" c="dimmed" onClick={() => navigate('/forgot')} size="xs">
                         Elfelejtetted a jelszavad?
                     </Anchor>
                     <Button type="submit" radius="xl">
                         Bejelentkezés
                     </Button>
                 </Group>
+
                 <Divider my="lg"/>
+
+                <Center mt="sm">
+                    <Text size="sm">
+                        Még nincs fiókod?{' '}
+                        <Anchor component={Link} to="/registrate" fw={500}>
+                            Regisztrálj itt
+                        </Anchor>
+                    </Text>
+                </Center>
             </form>
         </div>
     </AuthContainer>

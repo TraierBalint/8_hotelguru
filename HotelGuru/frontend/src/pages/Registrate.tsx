@@ -4,7 +4,10 @@ import {
     PasswordInput,
     Group,
     Button,
-    Anchor, Divider
+    Anchor,
+    Divider,
+    Center,
+    Text
 } from "@mantine/core";
 import {useForm} from "@mantine/form";
 import {useNavigate} from "react-router-dom";
@@ -29,7 +32,6 @@ const Registrate = () => {
         },
     });
 
-
     const submit = () => {
         regist(form.values.email, form.values.password, form.values.nev, form.values.phone)
     }
@@ -38,7 +40,7 @@ const Registrate = () => {
         <div>
             <form onSubmit={form.onSubmit(submit)}>
                 <Stack>
-                <TextInput
+                    <TextInput
                         required
                         label="Név"
                         placeholder="Teljes név"
@@ -75,16 +77,22 @@ const Registrate = () => {
                     />
                 </Stack>
 
-                <Group justify="space-between" mt="xl">
-                    <Anchor component="button" type="button" c="dimmed" onClick={() => navigate('/login')}
-                            size="xs">
-                        Bejelentkezni szeretnél?
-                    </Anchor>
+                <Group justify="flex-end" mt="xl">
                     <Button type="submit" radius="xl">
                         Regisztráció
                     </Button>
                 </Group>
-                <Divider my="lg"/>
+
+                <Divider my="lg" />
+
+                <Center mt="sm">
+                    <Text size="sm">
+                        Már van fiókod?{' '}
+                        <Anchor component="button" onClick={() => navigate('/login')} fw={500}>
+                            Jelentkezz be itt
+                        </Anchor>
+                    </Text>
+                </Center>
             </form>
         </div>
     </AuthContainer>

@@ -10,10 +10,12 @@ import {emailKeyName, tokenKeyName} from "./constants/constants.ts";
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem(tokenKeyName));
   const [email, setEmail] = useState(localStorage.getItem(emailKeyName));
+  const [name, setName] = useState<string | null>(null);
+  const [phone, setPhone] = useState<string | null>(null);
 
   return <MantineProvider theme={theme}>
     <BrowserRouter>
-      <AuthContext.Provider value={{ token, setToken, email, setEmail }}>
+    <AuthContext.Provider value={{ token, setToken, email, setEmail, name, setName, phone, setPhone }}>
         <Routing/>
       </AuthContext.Provider>
     </BrowserRouter>

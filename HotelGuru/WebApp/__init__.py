@@ -18,7 +18,7 @@ def create_app(config_class=Config):
 
     from flask_migrate import Migrate
     migrate = Migrate(app, db, render_as_batch=True)
-    CORS(app, origins='http://localhost:5173/', methods=['GET', 'POST', 'PUT', 'DELETE'], supports_credentials=True)
+    CORS(app, origins='http://localhost:5173', methods=['GET', 'POST', 'PUT', 'DELETE'], supports_credentials=True)
 
     @app.get("/")
     def home():

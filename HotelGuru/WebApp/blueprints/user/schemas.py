@@ -15,6 +15,7 @@ class UserResponseSchema(Schema):
     id = fields.Integer()
     name = fields.String()
     email = fields.String()
+    phone = fields.String() 
     token= fields.String()
 
 class UserLoginSchema(Schema):
