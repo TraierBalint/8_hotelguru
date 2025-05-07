@@ -19,7 +19,7 @@ class UserService:
             user = User(**request)
             user.set_password(user.password)
             user.roles.append(
-                db.session.execute(select(Role).filter_by(name="User")).scalar_one()            
+                db.session.execute(select(Role).filter_by(name="User")).scalar_one_or_none()            
                 )
             db.session.add(user)
             db.session.commit()

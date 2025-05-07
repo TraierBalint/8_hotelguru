@@ -3,6 +3,7 @@ from __future__ import annotations
 from WebApp import db
 from WebApp import create_app
 from config import Config
+from flask_cors import CORS
 
 app = create_app(config_class=Config)
 
@@ -19,7 +20,6 @@ db.session.add_all([ Role(name="Administrator"),
 db.session.commit()
 #User
 from WebApp.models.users import User,  UserRole
-from WebApp.models.address import Address
 from WebApp.models.reservation import Reservation
 from WebApp.models.invoice import Invoice
 from WebApp.models.rooms import Rooms

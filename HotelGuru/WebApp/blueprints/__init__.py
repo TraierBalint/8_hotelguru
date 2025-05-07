@@ -58,3 +58,6 @@ bp.register_blueprint(bp_extraservice, url_prefix='/extraservice')
 
 from WebApp.blueprints.invoice import bp as bp_invoice
 bp.register_blueprint(bp_invoice, url_prefix='/invoice')
+
+
+

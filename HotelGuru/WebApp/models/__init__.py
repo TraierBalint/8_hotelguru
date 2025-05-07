@@ -4,5 +4,4 @@ import WebApp.models.reservation
 import WebApp.models.rooms
 import WebApp.models.users
 import WebApp.models.role
-import WebApp.models.address
 import WebApp.models.reservation_rooms

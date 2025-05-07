@@ -10,7 +10,7 @@ const Dashboard = () => {
 
     }
 
-    return <>Dashboard Page</>
+    return <>Kezdőoldal</>
 }
 
 export default Dashboard;

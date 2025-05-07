@@ -16,6 +16,7 @@ def index():
 @bp.doc(tags=["user"])
 @bp.input(UserRequestSchema, location="json")
 @bp.output(UserResponseSchema)
+@cross_origin(origins="http://localhost:5173")
 def user_registrate(json_data):
     success, response = UserService.user_registrate(json_data)
     if success:
