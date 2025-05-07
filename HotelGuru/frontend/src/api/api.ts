@@ -2,13 +2,13 @@ import axiosInstance from "./axios.config.ts";
 import {IRoom} from "../interfaces/IRooms.ts";
 
 const Auth = {
-    login: (email: string, password: string) => axiosInstance.post<{token: string}>(`/api/User/login`, {email, password})
+    login: (email: string, password: string) => axiosInstance.post<{email: string, id: BigInt, name: string, token: string}>(`/api/user/login`, {email, password})
 }
 
-const Food = {
-    getFoods: () => axiosInstance.get<IRoom[]>(`/api/room`)
+const Room = {
+    getRooms: () => axiosInstance.get<IRoom[]>(`/api/rooms/list`)
 }
 
-const api = {Food, Auth};
+const api = {Room, Auth};
 
 export default api;
