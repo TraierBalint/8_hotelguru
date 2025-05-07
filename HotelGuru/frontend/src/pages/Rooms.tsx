@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import api from "../api/api.ts";
 import {IRoom} from "../interfaces/IRooms.ts";
-import {Card, Table} from "@mantine/core";
+import {Card, Table, Button, Badge, NumberFormatter} from "@mantine/core";
 
 const Rooms = () => {
     const [rooms, setRooms] = useState<IRoom[]>([]);
@@ -13,12 +13,26 @@ const Rooms = () => {
         });
     }, []);
 
+    const getColors = (status: string) => {
+        switch (status) {
+            case 'AVAILABLE':
+                return 'green';
+            case 'RESERVED':
+                return 'red';
+            case 'MAINTENANCE':
+                return 'yellow';
+            default:
+                return 'gray';
+        }
+    }
+
     const rows = rooms.map((room) => (
         <Table.Tr key={room.id}>
             <Table.Td>{room.name}</Table.Td>
             <Table.Td>{room.type}</Table.Td>
-            <Table.Td>{room.status}</Table.Td>
-            <Table.Td>{room.price}</Table.Td>
+            <Table.Td><Badge color={getColors(room.status)}>{room.status}</Badge></Table.Td>
+            <Table.Td><NumberFormatter value={room.price} suffix=" HUF" thousandSeparator={true}/></Table.Td>
+            <Table.Td><Button onClick={() => alert("Frontend müködés vége!")}>Foglalás</Button></Table.Td>
         </Table.Tr>
     ));
 
@@ -31,6 +45,7 @@ const Rooms = () => {
                         <Table.Th>Típusa</Table.Th>
                         <Table.Th>Státusz</Table.Th>
                         <Table.Th>Ár</Table.Th>
+                        <Table.Th>Foglalás</Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>

@@ -39,7 +39,7 @@ const Login = () => {
                     <TextInput
                         required
                         label="E-mail cím"
-                        placeholder="hello@mantine.dev"
+                        placeholder="E-mail cím"
                         key={form.key('email')}
                         radius="md"
                         {...form.getInputProps('email')}
@@ -48,7 +48,7 @@ const Login = () => {
                     <PasswordInput
                         required
                         label="Jelszó"
-                        placeholder="Jelszavad"
+                        placeholder="Jelszó"
                         key={form.key('password')}
                         radius="md"
                         {...form.getInputProps('password')}
@@ -56,9 +56,9 @@ const Login = () => {
                 </Stack>
 
                 <Group justify="space-between" mt="xl">
-                    <Anchor component="button" type="button" c="dimmed" onClick={() => navigate('/forgot')}
+                    <Anchor component="button" type="button" c="dimmed" onClick={() => navigate('/registrate')}
                             size="xs">
-                        Elfelejtetted a jelszavad?
+                        Regisztrálni szeretnél?
                     </Anchor>
                     <Button type="submit" radius="xl">
                         Bejelentkezés

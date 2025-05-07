@@ -7,7 +7,7 @@ const Header = ({opened, toggle}: any) => {
             justify="space-between"
             style={{display: "flex", alignItems: "center", height: "100%", paddingLeft: '20px', paddingRight: '20px'}}
         >
-            <Image src="/logo.png" alt="img" w={80} px={5}/>
+            <Image src="/hotel.jpeg" alt="img" w={80} px={5}/>
             <Box>
                 <UserMenuDropdown/>
             </Box>

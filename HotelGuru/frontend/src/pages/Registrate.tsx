@@ -78,7 +78,7 @@ const Registrate = () => {
                 <Group justify="space-between" mt="xl">
                     <Anchor component="button" type="button" c="dimmed" onClick={() => navigate('/login')}
                             size="xs">
-                        Bejelentkezni szeretnél?
+                        Bejelentkeznél?
                     </Anchor>
                     <Button type="submit" radius="xl">
                         Regisztráció
