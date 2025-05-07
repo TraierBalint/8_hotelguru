@@ -1,11 +1,7 @@
 import {useContext, useEffect} from "react";
 import {AuthContext} from "../context/AuthContext.tsx";
-import {emailKeyName, emailTokenKey, tokenKeyName} from "../constants/constants.ts";
-import {jwtDecode, JwtPayload} from "jwt-decode";
-
-interface CustomJwtPayload extends JwtPayload {
-    [key: string]: any; // Allowing dynamic keys if necessary
-}
+import {emailKeyName, tokenKeyName} from "../constants/constants.ts";
+import api from "../api/api.ts";
 
 const useAuth = () => {
     const { token, setToken, email, setEmail  } = useContext(AuthContext);
@@ -13,9 +9,12 @@ const useAuth = () => {
 
     const login = (email: string, password: string) => {
         console.log({email, password});
-        const tokenFromBE = 'yourDotnetToken';
-        setToken(tokenFromBE); localStorage.setItem(tokenKeyName, tokenFromBE);
-        setEmail(email); localStorage.setItem(emailKeyName, email);
+        api.Auth.login(email, password).then((res) => {
+            setToken(res.data.token);
+            localStorage.setItem(tokenKeyName, res.data.token);
+            setEmail(email);
+            localStorage.setItem(emailKeyName, email);
+        });
     }
 
     const logout = () => {
@@ -23,18 +22,11 @@ const useAuth = () => {
         setToken(null);
     }
 
-    const loginKata = (token: string) => {
-        setToken(token); localStorage.setItem(tokenKeyName, token);
-        const decodedToken = jwtDecode<CustomJwtPayload>(token);
-        const tempEmail = decodedToken[emailTokenKey];
-        localStorage.setItem(emailKeyName, tempEmail); setEmail(tempEmail);
-    }
-
     useEffect(() => {
 
     }, []);
 
-    return {login, logout, loginKata, token, email, isLoggedIn};
+    return {login, logout, token, email, isLoggedIn};
 }
 
 export default useAuth;
