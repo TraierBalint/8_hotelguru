@@ -3,32 +3,18 @@ from apiflask.fields import String, Email, Nested, Integer, List
 from apiflask.validators import Length, OneOf, Email
 from WebApp.models.users import User
 
-class AddressSchema(Schema):
-    city= fields.String()
-    street= fields.String()
-    postalcode = fields.Integer()
-
-class AddAddressSchema(Schema):
-    user_id = fields.Integer()
-    city= fields.String()
-    street= fields.String()
-    postalcode = fields.Integer()
-
-
 class UserRequestSchema(Schema):
         
     name = fields.String()
     email = String(validate=Email())
     password = fields.String()
     phone = fields.String()
-    address = fields.Nested(AddressSchema)
 
 
 class UserResponseSchema(Schema):
     id = fields.Integer()
     name = fields.String()
     email = fields.String()
-    address = fields.Nested(AddressSchema)
     token=fields.String()#ez bővítve
 
 class UserLoginSchema(Schema):

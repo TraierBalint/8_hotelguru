@@ -2,16 +2,19 @@ from WebApp.blueprints.rooms.schemas import RoomsResponseSchema, RoomsListSchema
 from WebApp.extensions import db
 from WebApp.models.rooms import Rooms ,RoomStatus, RoomType
 from sqlalchemy import select
+from flask import Flask, jsonify
 
 class RoomsService:
-
- 
 
     @staticmethod   # Ki listázas az összes szobát, amelyik szobát nem töröltünk ki 
     # ezt az egészet a rooms/routes.py-ban hívjuk meg a rooms_list_all() függvényben
     def rooms_list_all():
-        rooms = db.session.execute( select(Rooms).filter(Rooms.deleted.is_(0))).scalars()
-        return True, rooms #RoomsListSchema().dump(rooms, many=True) #itt nem dump-olom ki a roomot,mert routes.py-ban már ki van dump-olva a room
+        #rooms = db.session.execute( select(Rooms).filter(Rooms.deleted.is_(0))).scalars()
+        #return True, RoomsListSchema.dump(rooms, many=True) 
+        #return True, rooms  #itt nem dump-olom ki a roomot,mert routes.py-ban már ki van dump-olva a room
+        rooms = db.session.query(Rooms).all()
+        return True, jsonify([room.to_dict() for room in rooms])
+    
     
     @staticmethod #Szoba törlés
     # ezt az egészet a rooms/routes.py-ban hívjuk meg a room_delete() függvényben
@@ -33,13 +36,13 @@ class RoomsService:
             request["status"] = RoomStatus(request["status"]) 
             request["type"] = RoomType(request["type"])
         
-            room = Rooms(**request)
-            db.session.add(room)
+            rooms = Rooms(**request)
+            db.session.add(rooms)
             db.session.commit()
             
         except Exception as ex:
             return False, str(ex)#"room_add() error!"
-        return True, room  # itt nem dump-olom ki a roomot,mert routes.py-ban már ki van dump-olva a room
+        return True, jsonify(rooms.to_dict())  # itt nem dump-olom ki a roomot,mert routes.py-ban már ki van dump-olva a room
     
     @staticmethod # Szoba frisítése id alapján
     # ezt az egészet a rooms/routes.py-ban hívjuk meg a room_update() függvényben
@@ -47,17 +50,17 @@ class RoomsService:
         try:
             request["status"] = RoomStatus(request["status"]) 
             request["type"] = RoomType(request["type"])
-            room = db.session.get(Rooms, rid)
-            if room:
-                room.name = str(request["name"])
-                room.type = request["type"]
-                room.status = request["status"]
-                room.price = float(request["price"])
+            rooms = db.session.get(Rooms, rid)
+            if rooms:
+                rooms.name = str(request["name"])
+                rooms.type = request["type"]
+                rooms.status = request["status"]
+                rooms.price = float(request["price"])
                 db.session.commit()
             
         except Exception as ex:
             return False, "room_update() error!"
-        return True, room
+        return True, jsonify([room.to_dict() for room in rooms])
  
 
     @staticmethod # Szoba listázása típusa alapján

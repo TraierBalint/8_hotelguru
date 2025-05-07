@@ -30,3 +30,13 @@ class Rooms(db.Model):
     status: Mapped[RoomStatus] = mapped_column(Enum(RoomStatus), default=RoomStatus.AVAILABLE, nullable=False)  #így helyes
     deleted : Mapped[int] = mapped_column(default = 0) # ez lehetséges hogy nem kell
     reservation_rooms: Mapped[List["ReservationRoom"]] = relationship(back_populates="room")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "type": self.type.name if self.type else None,
+            "price": self.price,
+            "status": self.status.name if self.status else None,
+            "deleted": self.deleted
+        }

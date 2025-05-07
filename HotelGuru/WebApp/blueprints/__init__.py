@@ -2,10 +2,12 @@
 from apiflask import HTTPError
 from apiflask import APIBlueprint
 from functools import wraps
+from flask_cors import cross_origin
 
 bp = APIBlueprint('main', __name__, tag="default")
 
 @bp.route('/')
+@cross_origin(origins="http://localhost:5173")
 def index():
     return 'This is The Main Blueprint'
 
@@ -56,6 +58,3 @@ bp.register_blueprint(bp_extraservice, url_prefix='/extraservice')
 
 from WebApp.blueprints.invoice import bp as bp_invoice
 bp.register_blueprint(bp_invoice, url_prefix='/invoice')
-
-
-

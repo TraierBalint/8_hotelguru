@@ -1,7 +1,6 @@
 from WebApp.extensions import db
 from WebApp.blueprints.user.schemas import UserResponseSchema, RoleSchema, PayloadSchema
 from WebApp.models.users import User
-from WebApp.models.address import Address
 from WebApp.models.role import Role
 from sqlalchemy import select
 
@@ -17,7 +16,6 @@ class UserService:
             if db.session.execute(select(User).filter_by(email=request["email"])).scalar_one_or_none():
                 return False, "E-mail already exist!"
 
-            request["address"] = Address(**request["address"])
             user = User(**request)
             user.set_password(user.password)
             user.roles.append(
@@ -65,24 +63,6 @@ class UserService:
         if user is None:
             return False, "User not found!"
         return True, RoleSchema().dump(obj=user.roles, many=True)
-    
-
-    @staticmethod
-    def user_update_address(request):
-        try:
-            user = db.session.get(User, request["user_id"])
-            if not user:
-                return False, "User not found!"
-            address = Address(
-                city=request["city"],
-                street=request["street"],
-                postalcode=request["postalcode"]
-            )
-            user.address = address
-            db.session.commit()
-        except Exception as ex:
-            return False, str(ex)
-        return True, address
     
     #user törlés
     @staticmethod
