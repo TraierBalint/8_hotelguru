@@ -37,6 +37,7 @@ class UserService:
             return False, "Incorrect e-mail or password!"
            user_schema=UserResponseSchema().dump(user)
            user_schema["token"]=UserService.token_generate(user)
+           user_schema["roles"] = [role.name for role in user.roles]
            return True, user_schema
         except Exception as ex:
             return False, str(ex)

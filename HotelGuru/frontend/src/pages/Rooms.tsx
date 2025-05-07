@@ -1,14 +1,17 @@
 import {useEffect, useState} from "react";
 import api from "../api/api.ts";
 import {IRoom} from "../interfaces/IRooms.ts";
-import {Card, Table} from "@mantine/core";
+import {Button, Card, Table, Group} from "@mantine/core";
+import {useNavigate} from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const Rooms = () => {
     const [rooms, setRooms] = useState<IRoom[]>([]);
+    const navigate = useNavigate();
+    const { roles } = useAuth(); // <- ide jön be
 
     useEffect(() => {
-        api.Room.getRooms().then(res =>{
-            console.log(res.data);
+        api.Room.getRooms().then(res => {
             setRooms(res.data);
         });
     }, []);
@@ -22,8 +25,18 @@ const Rooms = () => {
         </Table.Tr>
     ));
 
-    return <>
+    const isAdmin = roles?.includes("Admin") || roles?.includes("Administrator");
+    console.log("Aktuális szerepkörök:", roles);
+
+    return (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Group justify="space-between" mb="md">
+                <h2>Szobák</h2>
+                {isAdmin && (
+                    <Button onClick={() => navigate("/app/rooms/add")}>Szoba hozzáadása</Button>
+                )}
+            </Group>
+
             <Table>
                 <Table.Thead>
                     <Table.Tr>
@@ -36,7 +49,8 @@ const Rooms = () => {
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
         </Card>
-    </>
-}
+    );
+};
+
 
 export default Rooms;

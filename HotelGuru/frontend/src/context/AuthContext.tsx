@@ -10,6 +10,8 @@ interface AuthContext {
     setName: (name: string | null) => void;
     phone: string | null;
     setPhone: (phone: string | null) => void;
+    roles: string[];                             
+    setRoles: (roles: string[]) => void; 
 }
 
 export const AuthContext = createContext<AuthContext>({
@@ -20,5 +22,7 @@ export const AuthContext = createContext<AuthContext>({
     name: null,
     setName: () => {},
     phone: null,
-    setPhone: () => {}
+    setPhone: () => {},
+    roles: [],                     
+    setRoles: () => {},         
 });

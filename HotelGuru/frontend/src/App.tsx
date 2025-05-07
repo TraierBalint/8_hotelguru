@@ -12,10 +12,17 @@ export default function App() {
   const [email, setEmail] = useState(localStorage.getItem(emailKeyName));
   const [name, setName] = useState<string | null>(null);
   const [phone, setPhone] = useState<string | null>(null);
+  const storedRoles = localStorage.getItem("roles");
+  const [roles, setRoles] = useState<string[]>(
+          storedRoles && storedRoles !== "undefined" ? JSON.parse(storedRoles) : []
+);
+
+
+  
 
   return <MantineProvider theme={theme}>
     <BrowserRouter>
-    <AuthContext.Provider value={{ token, setToken, email, setEmail, name, setName, phone, setPhone }}>
+    <AuthContext.Provider value={{ token, setToken, email, setEmail, name, setName, phone, setPhone, roles, setRoles }}>
         <Routing/>
       </AuthContext.Provider>
     </BrowserRouter>

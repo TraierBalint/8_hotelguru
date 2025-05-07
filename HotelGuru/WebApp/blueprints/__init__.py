@@ -3,11 +3,13 @@ from apiflask import HTTPError
 from apiflask import APIBlueprint
 from functools import wraps
 from flask_cors import cross_origin
+from flask_cors import CORS
 
 bp = APIBlueprint('main', __name__, tag="default")
+CORS(bp, origins='http://localhost:5173', supports_credentials=True)
 
 @bp.route('/')
-@cross_origin(origins="http://localhost:5173")
+
 def index():
     return 'This is The Main Blueprint'
 

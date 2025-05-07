@@ -35,7 +35,7 @@ def room_delete(rid):
 @bp.output(RoomsResponseSchema)
 #@bp.auth_required(auth)
 #@role_required(["Administrator","Receptionist"])
-@cross_origin(origins="http://localhost:5173")
+@cross_origin(origins="http://localhost:5173", methods=["POST", "OPTIONS"])
 def room_add_new(json_data):
     success, response = RoomsService.room_add(json_data)
     if success:

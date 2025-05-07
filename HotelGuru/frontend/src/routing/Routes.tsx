@@ -3,6 +3,7 @@ import Registrate from "../pages/Registrate.tsx";
 import Dashboard from "../pages/Dashboard.tsx";
 import Rooms from "../pages/Rooms.tsx";
 import Profile from "../pages/Profile.tsx";
+import AddRoom from "../pages/Addroom.tsx";
 export const routes = [
     {
         path: "login",
@@ -29,4 +30,10 @@ export const routes = [
         component: <Profile />,
         isPrivate: true,
       },
+
+      {
+        path: "rooms/add",
+        component: <AddRoom />,
+        isPrivate: true
+      }
 ]

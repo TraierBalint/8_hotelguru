@@ -1,5 +1,5 @@
 export interface IRoom {
-    id: number;
+    id?: number;
     name: string;
     type: string;
     status: string;
