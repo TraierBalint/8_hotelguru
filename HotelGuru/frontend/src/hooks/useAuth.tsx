@@ -10,8 +10,10 @@ const useAuth = () => {
     const login = (email: string, password: string) => {
         console.log({email, password});
         api.Auth.login(email, password).then((res) => {
-            setToken(res.data.token);
-            localStorage.setItem(tokenKeyName, res.data.token);
+            const token = res.data.token;
+            setToken(token);
+            localStorage.setItem(tokenKeyName, token);
+            const email = res.data.email;
             setEmail(email);
             localStorage.setItem(emailKeyName, email);
         });
