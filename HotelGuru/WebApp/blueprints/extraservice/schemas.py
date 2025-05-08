@@ -13,6 +13,6 @@ class ExtraServiceListResponseSchema(Schema):
 
 class ExtraServiceRequestSchema(Schema):
 
-    extraservice_id = fields.Integer(required=True)
     reservation_id = fields.Integer(required=True)
+    extraservice_id = fields.Integer(required=True)
     quantity = fields.Integer(required=True)

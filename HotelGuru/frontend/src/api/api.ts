@@ -26,6 +26,13 @@ const Reservation = {
         getReservations: () => axiosInstance.get("/api/reservation/myreservation"),
         cancelReservation: (id: number) =>
             axiosInstance.put(`/api/reservation/cancel/${id}`),
+        addExtraServiceToReservation: (data: {
+            reservation_id: number;
+            extraservice_id: number;
+            quantity: number;
+          }) => axiosInstance.post("/api/extraservice/order/add", data),
+          
+          getExtraServices: () => axiosInstance.get("/api/extraservice/list"),
   };
 
 

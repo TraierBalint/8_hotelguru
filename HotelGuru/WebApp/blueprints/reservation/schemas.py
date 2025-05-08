@@ -1,6 +1,8 @@
 from marshmallow import Schema, fields, validate, post_dump
 from WebApp.blueprints.rooms.schemas import RoomsListSchema
 from WebApp.models.rooms import Rooms
+from WebApp.models.extraservice import ExtraService
+from WebApp.models.extraservice_order import ExtraServiceOrder
 from WebApp.extensions import db
 from sqlalchemy import select
 
@@ -40,9 +42,26 @@ class ReservationResponseSchema(Schema):
     check_out = fields.Date()
     status = fields.String()
     items = fields.Method("get_items")
+    extraservices = fields.Method("get_extraservices")
 
     def get_items(self, obj):
             return RoomsListSchema(many=True).dump(obj.items or [])
+
+    def get_extraservices(self, obj):
+        orders = db.session.execute(
+            db.select(ExtraServiceOrder).where(ExtraServiceOrder.reservation_id == obj.id)
+        ).scalars().all()
+
+        results = []
+        for order in orders:
+            service = db.session.get(ExtraService, order.extraservice_id)
+            if service:
+                results.append({
+                    "name": service.name,
+                    "quantity": order.quantity,
+                    "price": service.price
+                })
+        return results
     
 
 

@@ -34,6 +34,10 @@ class Reservation(db.Model):  #nincs már benne az address id mert felesleges
     back_populates="reservations",
     cascade="all, delete-orphan",
     passive_deletes=False)
+    extraservice_orders: Mapped[List["ExtraServiceOrder"]] = relationship(
+    back_populates="reservation",
+    cascade="all, delete-orphan"
+)
     
         
 

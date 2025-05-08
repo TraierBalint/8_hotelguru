@@ -14,7 +14,10 @@ class ExtraService(db.Model):
     price: Mapped[float] = mapped_column(Float, nullable=False)
     #reservation_id: Mapped[int] = mapped_column(ForeignKey("reservations.id"), nullable=False)
     #reservations: Mapped[Optional['Reservation']] = relationship(back_populates='extraservices')
-    
+    extraservice_orders: Mapped[List["ExtraServiceOrder"]] = relationship(
+    back_populates="extraservice",
+    cascade="all, delete-orphan"
+)
     
 
 

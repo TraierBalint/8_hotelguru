@@ -1,6 +1,7 @@
 from WebApp.extensions import db
 from WebApp.models.extraservice import ExtraService
-from WebApp.blueprints.extraservice.schemas import ExtraServiceResponseSchema, ExtraServiceRequestSchema, ExtraServiceListResponseSchema
+from WebApp.models.extraservice_order import ExtraServiceOrder
+from WebApp.blueprints.extraservice.schemas import ExtraServiceResponseSchema,  ExtraServiceListResponseSchema
 from sqlalchemy import select
 
 class ExtraServiceService:
@@ -17,16 +18,21 @@ class ExtraServiceService:
             return False, "Extra service not found."
         return True, ExtraServiceListResponseSchema().dump(service)
 
+
+    
+
     @staticmethod
     def create(data):
         try:
-            new_service = ExtraService(**data)
-            db.session.add(new_service)
+            new_order = ExtraServiceOrder(**data)  
+            db.session.add(new_order)
             db.session.commit()
+            return True, ExtraServiceResponseSchema().dump(new_order)
         except Exception as ex:
+            db.session.rollback()
             return False, str(ex)
-        return True, ExtraServiceResponseSchema().dump(new_service)
 
+        
     @staticmethod
     def update(service_id, data):
         service = db.session.get(ExtraService, service_id)

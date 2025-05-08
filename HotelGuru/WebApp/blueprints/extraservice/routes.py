@@ -1,6 +1,6 @@
 from flask import jsonify
 from WebApp.blueprints.extraservice import bp
-from WebApp.blueprints.extraservice.schemas import ExtraServiceRequestSchema, ExtraServiceResponseSchema
+from WebApp.blueprints.extraservice.schemas import ExtraServiceRequestSchema, ExtraServiceResponseSchema,ExtraServiceListResponseSchema
 from WebApp.blueprints.extraservice.service import ExtraServiceService
 from apiflask import HTTPError
 from WebApp.extensions import auth
@@ -14,7 +14,7 @@ def index():
 
 @bp.get('/list')
 @bp.doc(tags=["extraservice"])
-@bp.output(ExtraServiceResponseSchema(many=True))
+@bp.output(ExtraServiceListResponseSchema(many=True))
 def list_services():
     success, response = ExtraServiceService.get_all()
     if success:
@@ -32,16 +32,14 @@ def get_service(service_id):
     raise HTTPError(message=response, status_code=404)
 
 
-@bp.post('/create')
-@bp.doc(tags=["extraservice"])
+@bp.post("/order/add")
 @bp.input(ExtraServiceRequestSchema, location="json")
-@bp.output(ExtraServiceResponseSchema)
 @bp.auth_required(auth)
-@role_required(["Administrator","Receptionist"])
-def create_service(json_data):
+@role_required(["User", "Receptionist", "Administrator"])
+def add_extra_service(json_data):
     success, response = ExtraServiceService.create(json_data)
     if success:
-        return response, 201
+        return {"message": response}, 201
     raise HTTPError(message=response, status_code=400)
 
 
@@ -66,4 +64,17 @@ def delete_service(service_id):
     success, response = ExtraServiceService.delete(service_id)
     if success:
         return response, 200
+    raise HTTPError(message=response, status_code=400)
+
+@bp.post('/create')
+@bp.doc(tags=["extraservice"])
+@bp.input(ExtraServiceRequestSchema, location="json")  
+@bp.output(ExtraServiceResponseSchema)
+@bp.auth_required(auth)
+@role_required(["Administrator","Receptionist"])
+
+def create_service(json_data):
+    success, response = ExtraServiceService.create(json_data)
+    if success:
+        return response, 201
     raise HTTPError(message=response, status_code=400)
