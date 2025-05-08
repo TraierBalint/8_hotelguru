@@ -116,16 +116,16 @@ const Reservations = () => {
                   ))}
                 </ul>
                 <Text fw={500} mt="xs">
-                            Összesen:{" "}
-                            {reservation.items.reduce(
-                                (sum: number, room: any) => sum + room.price,
-                                0
-                            ) +
-                                reservation.extraservices.reduce(
-                                (sum: number, extra: any) => sum + extra.quantity * extra.price,
-                                0
-                                )} Ft
-                            </Text>
+                        Összesen:{" "}
+                        {(reservation.items ?? []).reduce(
+                            (sum: number, room: any) => sum + room.price,
+                            0
+                        ) +
+                            (reservation.extraservices ?? []).reduce(
+                            (sum: number, extra: any) => sum + extra.quantity * extra.price,
+                            0
+                            )} Ft
+                        </Text>
               </>
             )}
                 {reservation.status === "ReservationStatus.ACTIVE" && (

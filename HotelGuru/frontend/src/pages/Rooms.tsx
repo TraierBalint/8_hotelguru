@@ -18,6 +18,7 @@ const Rooms = () => {
     });
   }, []);
 
+  
   const handleDelete = async (roomId: number) => {
     if (confirm("Biztosan törölni szeretnéd ezt a szobát?")) {
       try {

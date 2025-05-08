@@ -32,7 +32,7 @@ const AddReservation = () => {
         const transformed = res.data.map((room) => ({
             value: String(room.id),
             label: `${room.name} (${room.type}) - ${room.price} Ft`,
-            disabled: room.status !== "available", // csak az elérhető választható
+            disabled: room.status !== "AVAILABLE", // csak az elérhető választható
           }));
           setRooms(transformed);
       });

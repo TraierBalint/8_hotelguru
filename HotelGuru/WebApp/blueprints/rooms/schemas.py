@@ -15,6 +15,9 @@ class RoomsListSchema(BaseRoomSchema):
     id = fields.Integer()
     name = fields.String()
     price = fields.Float()
+    status = fields.Method("get_status")  
+    type = fields.Method("get_type")      
+
     
     
 class RoomsResponseSchema(BaseRoomSchema):
