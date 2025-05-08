@@ -23,6 +23,9 @@ const Room = {
 const Reservation = {
     addReservation: (data: any) =>
       axiosInstance.post("/api/reservation/add", data),
+        getReservations: () => axiosInstance.get("/api/reservation/myreservation"),
+        cancelReservation: (id: number) =>
+            axiosInstance.put(`/api/reservation/cancel/${id}`),
   };
 
 

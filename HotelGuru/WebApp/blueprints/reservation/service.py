@@ -58,7 +58,8 @@ class ReservationService:
                 db.session.add(rr)
 
             db.session.commit()
-            reservation.items = ReservationService.get_rooms_for_reservation(reservation.id)
+            success, rooms = ReservationService.get_rooms_for_reservation(reservation.id)
+            reservation.items = rooms if success and rooms else []
             return True, reservation
 
         except Exception as ex:
@@ -117,9 +118,13 @@ class ReservationService:
         reservations = db.session.execute(
             select(Reservation).filter_by(user_id=user_id)
         ).scalars().all()
+
         for r in reservations:
-            r.items = ReservationService.get_rooms_for_reservation(r.id)
+            success, rooms = ReservationService.get_rooms_for_reservation(r.id)
+            r.items = rooms if success else []
+
         return True, reservations
+
 
     @staticmethod
     def reservation_get_by_id(rid):
@@ -148,7 +153,8 @@ class ReservationService:
             reservation.status = ReservationStatus.CANCELLED
 
             db.session.commit()
-            reservation.items = ReservationService.get_rooms_for_reservation(reservation.id)
+            success, rooms = ReservationService.get_rooms_for_reservation(reservation.id)
+            reservation.items = rooms if success else []
             return True, reservation
 
         except Exception as ex:

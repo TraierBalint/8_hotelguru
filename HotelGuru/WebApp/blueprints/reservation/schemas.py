@@ -42,10 +42,7 @@ class ReservationResponseSchema(Schema):
     items = fields.Method("get_items")
 
     def get_items(self, obj):
-        #lekérdezi a foglalt szobákat a reservation_rooms táblából , lekérdezi az adatbázisból és visszaadja Jsonben
-        room_ids = [rr.room_id for rr in obj.reservation_rooms]
-        rooms = db.session.execute(select(Rooms).where(Rooms.id.in_(room_ids))).scalars().all()
-        return RoomsListSchema(many=True).dump(rooms)
+            return RoomsListSchema(many=True).dump(obj.items or [])
     
 
 

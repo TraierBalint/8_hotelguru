@@ -58,7 +58,12 @@ export function NavbarMinimal({toggle}: any) {
             icon: IconHome,
             label: "Extra szolgáltatások",
             url: "extra-services",
-        }
+        },
+        {
+            icon: IconHome,
+            label: "Foglalásaim",
+            url: "reservations", 
+         },
     ];
 
 
