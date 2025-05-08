@@ -4,6 +4,8 @@ import Dashboard from "../pages/Dashboard.tsx";
 import Rooms from "../pages/Rooms.tsx";
 import Profile from "../pages/Profile.tsx";
 import AddRoom from "../pages/Addroom.tsx";
+import AddReservationPage from "../pages/AddReservation.tsx";
+import Reservations from "../pages/Reservations.tsx";
 export const routes = [
     {
         path: "login",
@@ -34,6 +36,16 @@ export const routes = [
       {
         path: "rooms/add",
         component: <AddRoom />,
-        isPrivate: true
-      }
+        isPrivate: true,
+      },
+      {
+        path: "reservations/add",
+        component: <AddReservationPage />,
+        isPrivate: true,
+      },
+      {
+        path: "reservations",
+        component: <Reservations />,
+        isPrivate: true,
+      },
 ]

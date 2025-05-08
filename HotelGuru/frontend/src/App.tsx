@@ -6,6 +6,7 @@ import { AuthContext } from "./context/AuthContext";
 import Routing from "./routing/Routing.tsx";
 import {useState} from "react";
 import {emailKeyName, tokenKeyName} from "./constants/constants.ts";
+import '@mantine/core/styles.layer.css';
 
 export default function App() {
   const [token, setToken] = useState(localStorage.getItem(tokenKeyName));
@@ -21,6 +22,7 @@ export default function App() {
   
 
   return <MantineProvider theme={theme}>
+    
     <BrowserRouter>
     <AuthContext.Provider value={{ token, setToken, email, setEmail, name, setName, phone, setPhone, roles, setRoles }}>
         <Routing/>

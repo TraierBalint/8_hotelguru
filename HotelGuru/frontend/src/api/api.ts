@@ -20,9 +20,13 @@ const Room = {
     getRooms: () => axiosInstance.get<IRoom[]>(`/api/rooms/list`),
     addRoom: (room: IRoom) => axiosInstance.post(`/api/rooms/add`, room)  // ← ez kell
 }
+const Reservation = {
+    addReservation: (data: any) =>
+      axiosInstance.post("/api/reservation/add", data),
+  };
 
 
 
-const api = {Room, Reg, Auth};
+const api = {Room, Reg, Auth, Reservation};
 
 export default api;

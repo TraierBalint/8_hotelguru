@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth";
 const Rooms = () => {
     const [rooms, setRooms] = useState<IRoom[]>([]);
     const navigate = useNavigate();
-    const { roles } = useAuth(); // <- ide jön be
+    const { roles, isLoggedIn } = useAuth(); // <- isLoggedIn is kell
 
     useEffect(() => {
         api.Room.getRooms().then(res => {
@@ -22,6 +22,16 @@ const Rooms = () => {
             <Table.Td>{room.type}</Table.Td>
             <Table.Td>{room.status}</Table.Td>
             <Table.Td>{room.price}</Table.Td>
+            <Table.Td>
+                {isLoggedIn && (
+                    <Button
+                        size="xs"
+                        onClick={() => navigate(`/app/reservations/add?room_id=${room.id}`)}
+                    >
+                        Foglalás
+                    </Button>
+                )}
+            </Table.Td>
         </Table.Tr>
     ));
 
@@ -44,6 +54,7 @@ const Rooms = () => {
                         <Table.Th>Típusa</Table.Th>
                         <Table.Th>Státusz</Table.Th>
                         <Table.Th>Ár</Table.Th>
+                        <Table.Th>Művelet</Table.Th> {/* ide jön a "Foglalás" oszlopfejléc */}
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>
@@ -51,6 +62,5 @@ const Rooms = () => {
         </Card>
     );
 };
-
 
 export default Rooms;
