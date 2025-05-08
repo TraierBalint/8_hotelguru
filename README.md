@@ -10,3 +10,12 @@ illetve ha valaki csinál valamit figyeljen hogy a role-hoz való kötés is meg
 user/rooms/reservation/extraservice végpont müködik 
 user/rooms responed   kell lenni fog új adatt modell room_reservation 
 reservation/extra_service not responed 
+
+
+Andris install 
+-- npm install axios
+-- npm install @mantine/core @mantine/hooks
+-- npm install @mantine/dates
+-- npm install @tabler/icons-react
+-- npm install jwt-decode
+-- npm install @mantine/form

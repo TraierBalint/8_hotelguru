@@ -1,4 +1,5 @@
 import WebApp.models.extraservice
+import WebApp.models.extraservice_order
 import WebApp.models.invoice
 import WebApp.models.invoceItem
 import WebApp.models.reservation

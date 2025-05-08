@@ -8,7 +8,7 @@ import api from "../api/api.ts";
 import { AxiosError } from "axios";
 
 const AddReservation = () => {
-  const { token } = useAuth();
+  const { user,token } = useAuth();
   const navigate = useNavigate();
   const [userId, setUserId] = useState<number | null>(null); // Ezt backendből JWT alapján is szedheted
   const [rooms, setRooms] = useState<{ value: string; label: string }[]>([]);
@@ -29,23 +29,19 @@ const AddReservation = () => {
   // Szobák betöltése (lehetne csak elérhető is)
   useEffect(() => {
     api.Room.getRooms().then((res) => {
-      const transformed = res.data.map((room) => ({
-        value: String(room.id),
-        label: `${room.name} (${room.type}) - ${room.price} Ft`,
-      }));
-      setRooms(transformed);
-    });
-
-    // user azonosító beállítása (ha pl. JWT-ben nem jön, más módon kell lekérni)
-    // pl. backend hozzáadja current_user-t ID-val
-    // vagy a profilnál meghívsz egy `/me` végpontot és elmented
-    setUserId(1); // ← ideiglenes!
+        const transformed = res.data.map((room) => ({
+            value: String(room.id),
+            label: `${room.name} (${room.type}) - ${room.price} Ft`,
+            disabled: room.status !== "available", // csak az elérhető választható
+          }));
+          setRooms(transformed);
+      });
   }, []);
 
   const submit = async () => {
     try {
       const payload = {
-        user_id: userId,
+        user_id: user?.id,
         check_in: form.values.check_in,
         check_out: form.values.check_out,
         items: form.values.items.map((roomId) => ({ room_id: Number(roomId) })),

@@ -10,19 +10,19 @@ with app.app_context():
     # Létrehozás
     admin = User(
         name="Adminisztrátor",
-        email="admin@hotelguru.hu",
+        email="admin01@hotelguru.hu",
         phone="06301234567"
     )
     admin.set_password("asdasd123")  # jelszó
 
-    # Admin szerepkör keresése / létrehozása
+    # Administrator szerepkör keresése / létrehozása
     admin_role = db.session.execute(
-        db.select(Role).filter_by(name="Admin")
+        db.select(Role).filter_by(name="Administrator")
     ).scalar_one_or_none()
 
     if not admin_role:
-        print("⚠️ Nincs Admin szerepkör, létrehozom...")
-        admin_role = Role(name="Admin")
+        print("⚠️ Nincs Administrator szerepkör, létrehozom...")
+        admin_role = Role(name="Administrator")
         db.session.add(admin_role)
         db.session.commit()
 
@@ -31,4 +31,4 @@ with app.app_context():
     db.session.add(admin)
     db.session.commit()
 
-    print("✅ Admin felhasználó sikeresen létrehozva.")
+    print("✅ Admin felhasználó (Administrator szerepkörrel) sikeresen létrehozva.")

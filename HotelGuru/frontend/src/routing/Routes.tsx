@@ -6,6 +6,7 @@ import Profile from "../pages/Profile.tsx";
 import AddRoom from "../pages/Addroom.tsx";
 import AddReservationPage from "../pages/AddReservation.tsx";
 import Reservations from "../pages/Reservations.tsx";
+import ExtraServices from "../pages/ExtraServices.tsx";
 export const routes = [
     {
         path: "login",
@@ -48,4 +49,10 @@ export const routes = [
         component: <Reservations />,
         isPrivate: true,
       },
-]
+      {
+        path: "extra-services",
+        component: <ExtraServices />,
+        isPrivate: true,
+      },
+    ];
+    

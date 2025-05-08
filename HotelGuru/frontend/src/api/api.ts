@@ -18,7 +18,9 @@ const Reg = {
 
 const Room = {
     getRooms: () => axiosInstance.get<IRoom[]>(`/api/rooms/list`),
-    addRoom: (room: IRoom) => axiosInstance.post(`/api/rooms/add`, room)  // ← ez kell
+    addRoom: (room: IRoom) => axiosInstance.post(`/api/rooms/add`, room) , // ← ez kell
+    deleteRoom: (roomId: number) =>
+        axiosInstance.delete(`/api/rooms/delete/${roomId}`),
 }
 const Reservation = {
     addReservation: (data: any) =>

@@ -22,12 +22,13 @@ class RoomsService:
         try:
             room = db.session.get(Rooms, rid)
             if room:
-                room.deleted = 1
+                db.session.delete(room)  # végleges törlés
                 db.session.commit()
-            
+                return True, "Szoba véglegesen törölve."
+            return False, "Szoba nem található."
         except Exception as ex:
-            return False, "room_update() error!"
-        return True, "OK"
+            db.session.rollback()
+            return False, f"room_delete() hiba: {ex}"
     
     @staticmethod  # Szoba hozzáadás
     # ezt az egészet a rooms/routes.py-ban hívjuk meg a room_add_new() függvényben
